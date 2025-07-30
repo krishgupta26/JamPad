@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JamPad - User Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neonBlue: '#00FFFF',
+                        deepCyan: '#00AEEF',
+                        jetBlack: '#0A0A0A',
+                        charcoal: '#121212',
+                        gunmetal: '#2A2A2A',
+                        elecPurple: '#8A2BE2',
+                        softWhite: '#EAEAEA'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Hide scrollbar but keep functionality */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#050507] via-[#070716] to-[#050507] min-h-screen text-softWhite">
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <div class="w-64 h-screen bg-gunmetal/30 border-r border-neonBlue/20 fixed left-0 top-0 backdrop-blur-sm z-50">
+            <!-- Logo -->
+            <div class="p-6 border-b border-neonBlue/20">
+                <h1 class="text-3xl font-bold text-neonBlue">JamPad</h1>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="py-6 px-4 space-y-2">
+                <!-- Return Home -->
+                <a href="letsjam.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-neonBlue/10 transition-all group">
+                    <svg class="w-6 h-6 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h2a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3"></path>
+                    </svg>
+                    <span class="font-medium group-hover:text-neonBlue transition-colors">Return Home</span>
+                </a>
+
+                <!-- Add Friend -->
+                <div id="friendRequestButton" class="hidden">
+                    <button onclick="sendFriendRequest()" class="flex items-center gap-4 p-3 rounded-lg hover:bg-elecPurple/10 transition-all group w-full">
+                        <svg class="w-6 h-6 text-elecPurple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        <span class="font-medium group-hover:text-elecPurple transition-colors">Add Friend</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="ml-64 flex-1 relative">
+            <!-- Fixed Header Area -->
+            <div class="fixed top-0 right-0 left-64 bg-[#050507]/95 backdrop-blur-md z-40 border-b border-neonBlue/20">
+                <div class="px-8 py-6 flex justify-between items-center">
+                    <div>
+                        <h2 id="studioOwner" class="text-3xl font-bold text-neonBlue">Loading Studio...</h2>
+                        <p id="ownerInfo" class="text-softWhite/70 mt-1">Loading user information...</p>
+                    </div>
+                    <div>
+                        <button onclick="goBack()" class="px-4 py-2 rounded-lg border border-neonBlue/30 text-neonBlue hover:bg-neonBlue/10">
+                            Back to Friends
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scrollable Content Area -->
+            <div class="mt-[120px] p-8 pt-6">
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold text-elecPurple mb-4">User's Recordings</h3>
+                    <div id="userRecordings" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-gunmetal/50 p-6 rounded-lg border border-neonBlue/20 animate-pulse">
+                            <div class="h-4 bg-neonBlue/20 rounded w-3/4 mb-4"></div>
+                            <div class="h-3 bg-neonBlue/10 rounded w-1/2 mb-2"></div>
+                            <div class="h-3 bg-neonBlue/10 rounded w-1/4"></div>
+                        </div>
+                        <div class="bg-gunmetal/50 p-6 rounded-lg border border-neonBlue/20 animate-pulse">
+                            <div class="h-4 bg-neonBlue/20 rounded w-3/4 mb-4"></div>
+                            <div class="h-3 bg-neonBlue/10 rounded w-1/2 mb-2"></div>
+                            <div class="h-3 bg-neonBlue/10 rounded w-1/4"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Update the Drafts section to be hidden by default -->
+                <div class="mt-12 mb-8 hidden" id="draftsSection">
+                    <h3 class="text-2xl font-bold text-elecPurple mb-4">My Drafts</h3>
+                    <div id="userDrafts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-gunmetal/50 p-6 rounded-lg border border-elecPurple/20 animate-pulse">
+                            <div class="h-4 bg-elecPurple/20 rounded w-3/4 mb-4"></div>
+                            <div class="h-3 bg-elecPurple/10 rounded w-1/2 mb-2"></div>
+                            <div class="h-3 bg-elecPurple/10 rounded w-1/4"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add a new section for drafts from other users below the existing drafts section -->
+                <div class="mt-12 mb-8 hidden" id="otherUserDraftsSection">
+                    <h3 class="text-2xl font-bold text-deepCyan mb-4" id="otherUserDraftsTitle">Drafts from Other Musicians</h3>
+                    <div id="otherUserDrafts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-gunmetal/50 p-6 rounded-lg border border-deepCyan/20 animate-pulse">
+                            <div class="h-4 bg-deepCyan/20 rounded w-3/4 mb-4"></div>
+                            <div class="h-3 bg-deepCyan/10 rounded w-1/2 mb-2"></div>
+                            <div class="h-3 bg-deepCyan/10 rounded w-1/4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let userId;
+        let currentUserId;
+
+        // Get the user ID from the URL
+        function getUserIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // Check friend status
+        async function checkFriendStatus() {
+            try {
+                const response = await fetch(`/api/friends/status?friendId=${userId}`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.status === 'none') {
+                    document.getElementById('friendRequestButton').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error checking friend status:', error);
+            }
+        }
+
+        // Send a friend request
+        async function sendFriendRequest() {
+            try {
+                const response = await fetch('/api/friends/request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ friendId: userId })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('Friend request sent successfully!');
+                    document.getElementById('friendRequestButton').classList.add('hidden');
+                } else {
+                    alert(data.error || 'Failed to send friend request');
+                }
+            } catch (error) {
+                console.error('Error sending friend request:', error);
+                alert('Failed to send friend request');
+            }
+        }
+
+        // Load user information
+        async function loadUserInfo() {
+            try {
+                const response = await fetch(`/api/users/${userId}`, {
+                    credentials: 'include'
+                });
+                const user = await response.json();
+                
+                document.getElementById('studioOwner').textContent = `${user.username}'s Studio`;
+                
+                let infoText = '';
+                if (user.preferred_instruments) {
+                    infoText += `Instruments: ${user.preferred_instruments} • `;
+                }
+                if (user.preferred_genres) {
+                    infoText += `Genres: ${user.preferred_genres} • `;
+                }
+                infoText += `Jam Count: ${user.jam_count || 0}`;
+                
+                document.getElementById('ownerInfo').textContent = infoText;
+                
+                document.title = `JamPad - ${user.username}'s Studio`;
+            } catch (error) {
+                console.error('Error loading user info:', error);
+                document.getElementById('studioOwner').textContent = 'User Studio';
+                document.getElementById('ownerInfo').textContent = 'Could not load user information';
+            }
+        }
+
+        // Load user recordings
+        async function loadUserRecordings() {
+            try {
+                console.log('Fetching recordings for user ID:', userId);
+                // Add a timestamp to prevent caching
+                const response = await fetch(`/api/recordings/${userId}?t=${Date.now()}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                }
+
+                const recordings = await response.json();
+                console.log('Recordings found:', recordings.length);
+                
+                const recordingsContainer = document.getElementById('userRecordings');
+                
+                if (!recordings || recordings.length === 0) {
+                    recordingsContainer.innerHTML = `
+                        <div class="col-span-full text-center py-8">
+                            <p class="text-softWhite/60">This user has no recordings yet.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                recordingsContainer.innerHTML = recordings.map(rec => `
+                    <div class="bg-gunmetal/50 p-6 rounded-lg border border-neonBlue/20 hover:shadow-[0_0_15px_rgba(0,255,255,0.2)] transition-all">
+                        <h4 class="text-neonBlue font-bold text-xl mb-2">${rec.title || 'Untitled Recording'}</h4>
+                        <p class="text-softWhite/60 mb-4">Instrument: ${rec.instrument || 'Not specified'}</p>
+                        <div class="bg-charcoal/50 rounded-lg p-4">
+                            <audio controls class="w-full">
+                                <source src="/recordings/${rec.filename}" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <div class="flex justify-between items-center mt-4">
+                            <p class="text-xs text-softWhite/40">${new Date(rec.created_at).toLocaleString()}</p>
+                            <button 
+                                onclick="jamOnRecording(${rec.id}, '${rec.title}', '${rec.filename}', '${rec.instrument}')" 
+                                class="px-4 py-2 bg-elecPurple text-white rounded-lg hover:bg-elecPurple/80 transition-all">
+                                Jam
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading recordings:', error);
+                document.getElementById('userRecordings').innerHTML = `
+                    <div class="col-span-full text-center py-8">
+                        <p class="text-red-500">Error loading recordings: ${error.message}</p>
+                        <p class="text-softWhite/60 mt-2">Please try again or check the console for more details.</p>
+                        <button onclick="loadUserRecordings()" class="mt-4 px-4 py-2 bg-neonBlue/20 text-neonBlue rounded-lg hover:bg-neonBlue/30">
+                            Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Go back function
+        function goBack() {
+            window.history.back();
+        }
+
+        // Update the jamOnRecording function
+        async function jamOnRecording(recordingId, title, filename, instrument) {
+            try {
+                // Show in-progress notification
+                showNotification('Saving draft...', 'info');
+                
+                const response = await fetch('/api/jam-on-recording', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        originalId: recordingId,
+                        title: `Jam on ${title}`,
+                        filename: filename,
+                        instrument: instrument
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Draft saved in your studio!', 'success');
+                    
+                    // Wait a moment before redirecting to the main studio page
+                    setTimeout(() => {
+                        window.location.href = `/studio.html`;
+                    }, 1500);
+                } else {
+                    showNotification(data.error || 'Failed to add recording', 'error');
+                }
+            } catch (error) {
+                console.error('Error jamming on recording:', error);
+                showNotification('Error adding recording to drafts', 'error');
+            }
+        }
+
+        // Add notification function
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            
+            let bgColor;
+            switch(type) {
+                case 'success':
+                    bgColor = 'bg-green-500';
+                    break;
+                case 'error':
+                    bgColor = 'bg-red-500';
+                    break;
+                case 'info':
+                    bgColor = 'bg-blue-500';
+                    break;
+                default:
+                    bgColor = 'bg-gray-500';
+            }
+            
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg z-50 ${bgColor} text-white`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Add this function to load current user's drafts
+        async function loadUserDrafts() {
+            try {
+                const response = await fetch('/api/drafts', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}`);
+                }
+                
+                const drafts = await response.json();
+                const draftsContainer = document.getElementById('userDrafts');
+                
+                if (!drafts || drafts.length === 0) {
+                    draftsContainer.innerHTML = `
+                        <div class="col-span-full text-center py-8">
+                            <p class="text-softWhite/60">You haven't jammed on any recordings yet.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                draftsContainer.innerHTML = drafts.map(draft => `
+                    <div class="bg-gunmetal/50 p-6 rounded-lg border border-elecPurple/20 hover:shadow-[0_0_15px_rgba(138,43,226,0.3)] transition-all">
+                        <h4 class="text-elecPurple font-bold text-xl mb-2">${draft.title || 'Untitled Draft'}</h4>
+                        <p class="text-softWhite/60 mb-4">Instrument: ${draft.instrument || 'Not specified'}</p>
+                        <div class="bg-charcoal/50 rounded-lg p-4">
+                            <audio controls class="w-full">
+                                <source src="/recordings/${draft.filename}" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <div class="flex items-center gap-2 mt-3">
+                            <span class="text-xs bg-elecPurple/20 text-elecPurple px-2 py-1 rounded-full">Draft</span>
+                            <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">${draft.instrument}</span>
+                            <span class="text-xs text-softWhite/40 ml-auto">${new Date(draft.created_at).toLocaleString()}</span>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading drafts:', error);
+                document.getElementById('userDrafts').innerHTML = `
+                    <div class="col-span-full text-center py-8">
+                        <p class="text-red-500">Error loading drafts. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Add this function to get the current user's ID
+        async function getCurrentUserId() {
+            try {
+                const response = await fetch('/api/user', {
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    return null;
+                }
+                const data = await response.json();
+                return data.id;
+            } catch (error) {
+                console.error('Error fetching current user:', error);
+                return null;
+            }
+        }
+
+        // Add this function to load drafts from other users
+        async function loadOtherUserDrafts() {
+            try {
+                const response = await fetch('/api/drafts/from-others', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}`);
+                }
+                
+                const drafts = await response.json();
+                const draftsContainer = document.getElementById('otherUserDrafts');
+                
+                if (!drafts || drafts.length === 0) {
+                    document.getElementById('otherUserDraftsSection').classList.add('hidden');
+                    return;
+                }
+                
+                // Group drafts by original user
+                const draftsByUser = {};
+                
+                drafts.forEach(draft => {
+                    if (!draftsByUser[draft.original_username]) {
+                        draftsByUser[draft.original_username] = [];
+                    }
+                    draftsByUser[draft.original_username].push(draft);
+                });
+                
+                let draftsHtml = '';
+                
+                // Create HTML for each group of drafts
+                Object.keys(draftsByUser).forEach(username => {
+                    draftsHtml += `
+                        <div class="col-span-full mb-6">
+                            <h4 class="text-xl font-bold text-deepCyan mb-3">Drafts from ${username}</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                ${draftsByUser[username].map(draft => `
+                                    <div class="bg-gunmetal/50 p-6 rounded-lg border border-deepCyan/20 hover:shadow-[0_0_15px_rgba(0,174,239,0.3)] transition-all">
+                                        <h4 class="text-deepCyan font-bold text-xl mb-2">${draft.title || 'Untitled Draft'}</h4>
+                                        <p class="text-softWhite/60 mb-4">Instrument: ${draft.instrument || 'Not specified'}</p>
+                                        <div class="bg-charcoal/50 rounded-lg p-4">
+                                            <audio controls class="w-full">
+                                                <source src="/recordings/${draft.filename}" type="audio/wav">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                        </div>
+                                        <div class="flex items-center gap-2 mt-3">
+                                            <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">Draft</span>
+                                            <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">${draft.instrument}</span>
+                                            <span class="text-xs text-softWhite/40 ml-auto">${new Date(draft.created_at).toLocaleString()}</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                draftsContainer.innerHTML = draftsHtml;
+                document.getElementById('otherUserDraftsSection').classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Error loading drafts from other users:', error);
+                document.getElementById('otherUserDrafts').innerHTML = `
+                    <div class="col-span-full text-center py-8">
+                        <p class="text-red-500">Error loading drafts from other users.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Update the initialize function to load other user drafts
+        window.addEventListener('DOMContentLoaded', async () => {
+            userId = getUserIdFromUrl();
+            if (!userId) {
+                alert('No user specified');
+                window.location.href = 'letsjam.html';
+                return;
+            }
+            
+            // Get and store current user ID
+            currentUserId = await getCurrentUserId();
+            console.log('Current user ID:', currentUserId);
+            
+            await loadUserInfo();
+            await loadUserRecordings();
+            await checkFriendStatus();
+            
+            // Only load drafts if viewing your own studio
+            if (userId == currentUserId) {
+                // Show Drafts section
+                document.getElementById('draftsSection').classList.remove('hidden');
+                await loadUserDrafts();
+                
+                // Load drafts from other users
+                await loadOtherUserDrafts();
+            }
+        });
+    </script>
+</body>
+</html> 

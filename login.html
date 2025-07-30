@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JamPad - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neonBlue: '#00FFFF',
+                        deepCyan: '#00AEEF',
+                        jetBlack: '#0A0A0A',
+                        charcoal: '#121212',
+                        gunmetal: '#2A2A2A',
+                        elecPurple: '#8A2BE2',
+                        softWhite: '#EAEAEA'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-[#050507] via-[#070716] to-[#050507] min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md mx-auto">
+        <div class="bg-gunmetal/70 p-12 rounded-xl border border-neonBlue/20 shadow-2xl backdrop-blur-sm">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-neonBlue mb-2">JamPad</h1>
+                <p class="text-softWhite/60">Your Musical Journey Begins Here</p>
+            </div>
+            
+            <div class="space-y-8">
+                <div>
+                    <label class="text-softWhite block mb-3 text-lg">Email</label>
+                    <input type="email" id="email" class="w-full bg-charcoal text-softWhite border border-neonBlue/20 rounded-lg p-3 focus:border-neonBlue focus:outline-none transition-all">
+                </div>
+                <div>
+                    <label class="text-softWhite block mb-3 text-lg">Username</label>
+                    <input type="text" id="username" class="w-full bg-charcoal text-softWhite border border-neonBlue/20 rounded-lg p-3 focus:border-neonBlue focus:outline-none transition-all">
+                </div>
+                <div>
+                    <label class="text-softWhite block mb-3 text-lg">Password</label>
+                    <input type="password" id="password" class="w-full bg-charcoal text-softWhite border border-neonBlue/20 rounded-lg p-3 focus:border-neonBlue focus:outline-none transition-all">
+                </div>
+                <button onclick="login()" class="w-full bg-neonBlue/20 text-neonBlue py-4 rounded-lg hover:bg-neonBlue/30 transition-all text-lg font-semibold">
+                    Login
+                </button>
+                <p class="text-center text-softWhite text-lg">
+                    Don't have an account? 
+                    <a href="#" onclick="toggleForm()" class="text-deepCyan hover:text-neonBlue transition-all">Sign up</a>
+                </p>
+            </div>
+        </div>
+
+        <script>
+            let isLoginForm = true;
+        
+            function toggleForm() {
+                isLoginForm = !isLoginForm;
+                const button = document.querySelector('button');
+                const toggleLink = document.querySelector('p a');
+                const title = document.querySelector('h1');
+        
+                if (isLoginForm) {
+                    button.textContent = 'Login';
+                    toggleLink.textContent = 'Sign up';
+                    title.textContent = 'JamPad';
+                } else {
+                    button.textContent = 'Sign Up';
+                    toggleLink.textContent = 'Login';
+                    title.textContent = 'Create Account';
+                }
+            }
+        
+            async function login() {
+                const email = document.getElementById('email').value;
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const endpoint = isLoginForm ? '/api/login' : '/api/signup';
+        
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({ email, username, password })
+                    });
+        
+                    const data = await response.json();
+        
+                    if (response.ok) {
+                        sessionStorage.setItem('isLoggedIn', 'true');
+                        sessionStorage.setItem('userEmail', email);
+                        sessionStorage.setItem('username', username);
+                        window.location.href = data.redirect || '/letsjam.html';
+                    } else {
+                        alert(data.error);
+                    }
+                } catch (error) {
+                    alert('Error connecting to server');
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>

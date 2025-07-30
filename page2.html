@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile - JamPad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neonBlue: '#00FFFF',
+                        deepCyan: '#00AEEF',
+                        jetBlack: '#0A0A0A',
+                        charcoal: '#121212',
+                        gunmetal: '#2A2A2A',
+                        elecPurple: '#8A2BE2',
+                        softWhite: '#EAEAEA'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-[#050507] via-[#070716] to-[#050507] min-h-screen text-softWhite">
+    <div class="container mx-auto px-6 py-12">
+        <h1 class="text-4xl font-bold text-neonBlue mb-12 text-center">Complete Your Profile</h1>
+        
+        <form id="profileForm" class="max-w-4xl mx-auto space-y-12">
+            <div class="bg-gunmetal/30 p-8 rounded-xl border border-neonBlue/20 backdrop-blur-sm">
+                <h2 class="text-2xl font-bold text-neonBlue mb-6">Select Your Instruments</h2>
+                <div class="grid grid-cols-3 md:grid-cols-4 gap-4">
+                    <label class="flex items-center space-x-3 p-3 bg-charcoal/50 rounded-lg hover:bg-charcoal/70 transition-all cursor-pointer">
+                        <input type="checkbox" name="instruments" value="Guitar" class="text-neonBlue w-5 h-5">
+                        <span class="text-lg">Guitar</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 bg-charcoal/50 rounded-lg hover:bg-charcoal/70 transition-all cursor-pointer">
+                        <input type="checkbox" name="instruments" value="Bass" class="text-neonBlue w-5 h-5">
+                        <span class="text-lg">Bass</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 bg-charcoal/50 rounded-lg hover:bg-charcoal/70 transition-all cursor-pointer">
+                        <input type="checkbox" name="instruments" value="Drums" class="text-neonBlue w-5 h-5">
+                        <span class="text-lg">Drums</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 bg-charcoal/50 rounded-lg hover:bg-charcoal/70 transition-all cursor-pointer">
+                        <input type="checkbox" name="instruments" value="Piano" class="text-neonBlue w-5 h-5">
+                        <span class="text-lg">Piano</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 bg-charcoal/50 rounded-lg hover:bg-charcoal/70 transition-all cursor-pointer">
+                        <input type="checkbox" name="instruments" value="Vocals" class="text-neonBlue w-5 h-5">
+                        <span class="text-lg">Vocals</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="bg-gunmetal/30 p-8 rounded-xl border border-neonBlue/20 backdrop-blur-sm">
+                <h2 class="text-2xl font-bold text-neonBlue mb-6">Select Your Genres</h2>
+                <div class="grid grid-cols-3 md:grid-cols-4 gap-4">
+                    <label class="flex items-center space-x-3 p-3 bg-charcoal/50 rounded-lg hover:bg-charcoal/70 transition-all cursor-pointer">
+                        <input type="checkbox" name="genres" value="Rock" class="text-neonBlue w-5 h-5">
+                        <span class="text-lg">Rock</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 bg-charcoal/50 rounded-lg hover:bg-charcoal/70 transition-all cursor-pointer">
+                        <input type="checkbox" name="genres" value="Jazz" class="text-neonBlue w-5 h-5">
+                        <span class="text-lg">Jazz</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 bg-charcoal/50 rounded-lg hover:bg-charcoal/70 transition-all cursor-pointer">
+                        <input type="checkbox" name="genres" value="Blues" class="text-neonBlue w-5 h-5">
+                        <span class="text-lg">Blues</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 bg-charcoal/50 rounded-lg hover:bg-charcoal/70 transition-all cursor-pointer">
+                        <input type="checkbox" name="genres" value="Metal" class="text-neonBlue w-5 h-5">
+                        <span class="text-lg">Metal</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 bg-charcoal/50 rounded-lg hover:bg-charcoal/70 transition-all cursor-pointer">
+                        <input type="checkbox" name="genres" value="Pop" class="text-neonBlue w-5 h-5">
+                        <span class="text-lg">Pop</span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-neonBlue/20 text-neonBlue py-4 rounded-lg hover:bg-neonBlue/30 transition-all font-bold text-xl border border-neonBlue/50 hover:border-neonBlue">
+                Complete Profile
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Get selected instruments and genres
+            const selectedInstruments = [...document.querySelectorAll('input[name="instruments"]:checked')].map(el => el.value);
+            const selectedGenres = [...document.querySelectorAll('input[name="genres"]:checked')].map(el => el.value);
+            
+            try {
+                const response = await fetch('/api/update-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        instruments: selectedInstruments,
+                        genres: selectedGenres
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Add this line to handle the redirect
+                    window.location.href = data.redirect;
+                } else {
+                    console.error('Error:', data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - JamPad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neonBlue: '#00FFFF',
+                        deepCyan: '#00AEEF',
+                        jetBlack: '#0A0A0A',
+                        charcoal: '#121212',
+                        gunmetal: '#2A2A2A',
+                        elecPurple: '#8A2BE2',
+                        softWhite: '#EAEAEA'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-[#050507] via-[#070716] to-[#050507] min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto bg-gunmetal/90 rounded-xl border border-neonBlue/20 p-8">
+            <h1 class="text-3xl font-bold text-neonBlue mb-8">Your Profile</h1>
+            
+            <div class="space-y-6">
+                <div>
+                    <h2 class="text-softWhite text-xl mb-2">Account Information</h2>
+                    <div class="bg-charcoal p-4 rounded-lg">
+                        <p class="text-softWhite mb-2">Email: <span id="userEmail" class="text-neonBlue"></span></p>
+                        <p class="text-softWhite">Username: <span id="userName" class="text-neonBlue"></span></p>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-softWhite text-xl mb-2">Musical Preferences</h2>
+                    <div class="bg-charcoal p-4 rounded-lg">
+                        <p class="text-softWhite mb-2">Instruments: <span id="userInstruments" class="text-neonBlue"></span></p>
+                        <p class="text-softWhite">Genres: <span id="userGenres" class="text-neonBlue"></span></p>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center">
+                    <button onclick="window.location.href='page2.html'" class="bg-neonBlue/20 text-neonBlue px-6 py-3 rounded-lg hover:bg-neonBlue/30 transition-all">
+                        Update Profile
+                    </button>
+                    <button onclick="window.location.href='letsjam.html'" class="bg-deepCyan/20 text-deepCyan px-6 py-3 rounded-lg hover:bg-deepCyan/30 transition-all">
+                        Back to Studio
+                    </button>
+                    <button onclick="logout()" class="bg-red-500/20 text-red-500 px-6 py-3 rounded-lg hover:bg-red-500/30 transition-all">
+                        Logout
+                    </button>
+                </div>
+                
+                <script>
+                    function logout() {
+                        sessionStorage.clear();
+                        window.location.href = 'login.html';
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+
+    // Update the script section
+    <script>
+        // Check if user is logged in using sessionStorage
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+        const userEmail = sessionStorage.getItem('userEmail');
+        const username = sessionStorage.getItem('username');
+    
+        if (isLoggedIn === 'true' && userEmail && username) {
+            document.getElementById('userEmail').textContent = userEmail;
+            document.getElementById('userName').textContent = username;
+            
+            async function fetchUserData() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/user', {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const userData = await response.json();
+                        // Format the instruments and genres for display
+                        const instruments = userData.preferred_instruments ? userData.preferred_instruments.split(',').join(', ') : 'Not set';
+                        const genres = userData.preferred_genres ? userData.preferred_genres.split(',').join(', ') : 'Not set';
+                        
+                        document.getElementById('userInstruments').textContent = instruments;
+                        document.getElementById('userGenres').textContent = genres;
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+            
+            fetchUserData();
+        } else {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

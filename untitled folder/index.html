@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JamPad - Global Music Collaboration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        jampad: '#00F6FF',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-gray-950 via-gray-900 to-black min-h-screen">
+    <div class="bg-overlay min-h-screen">
+        <nav class="p-4 flex justify-between items-center">
+            <h1 class="text-4xl font-bold text-jampad">JamPad</h1>
+            
+            <div class="flex items-center gap-4">
+                <div class="relative group">
+                    <button class="text-white hover:text-jampad transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-gray-900 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="#" class="block px-4 py-2 text-white hover:bg-gray-800">Settings</a>
+                        <a href="#" class="block px-4 py-2 text-white hover:bg-gray-800">Accessibility</a>
+                        <a href="#" class="block px-4 py-2 text-white hover:bg-gray-800">Account</a>
+                        <a href="#" class="block px-4 py-2 text-white hover:bg-gray-800">Profile</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container mx-auto px-4 mt-12 text-center">
+            <h2 class="text-6xl font-bold text-white mb-6">Welcome to <span class="text-jampad">JamPad</span></h2>
+            <p class="text-2xl text-gray-300 max-w-3xl mx-auto mb-12">
+                Where Musicians Collaborate, Anywhere, Anytime
+            </p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
+                <div class="bg-gray-900 p-6 rounded-xl border-2 border-jampad/30 hover:border-jampad hover:shadow-[0_0_15px_rgba(0,246,255,0.5)] transition-all duration-300">
+                    <h3 class="text-jampad text-xl font-bold mb-3">Upload Your Music</h3>
+                    <p class="text-gray-300">
+                        Share your guitar riffs, drum beats, or vocal melodies with the community.
+                    </p>
+                </div>
+                <div class="bg-gray-900 p-6 rounded-xl border-2 border-jampad/30 hover:border-jampad hover:shadow-[0_0_15px_rgba(0,246,255,0.5)] transition-all duration-300">
+                    <h3 class="text-jampad text-xl font-bold mb-3">Collaborate Seamlessly</h3>
+                    <p class="text-gray-300">
+                        Other musicians can listen to your track and layer their instrumentals or vocals over it.
+                    </p>
+                </div>
+                <div class="bg-gray-900 p-6 rounded-xl border-2 border-jampad/30 hover:border-jampad hover:shadow-[0_0_15px_rgba(0,246,255,0.5)] transition-all duration-300">
+                    <h3 class="text-jampad text-xl font-bold mb-3">Create Online Bands</h3>
+                    <p class="text-gray-300">
+                        Form your own virtual band by collaborating with like-minded musicians across the globe.
+                    </p>
+                </div>
+            </div>
+
+            <section class="mb-16">
+                <h3 class="text-3xl font-bold text-white mb-8">How It Works</h3>
+                <div class="flex flex-col md:flex-row justify-center gap-8 text-left max-w-4xl mx-auto">
+                    <div class="flex-1 bg-gray-900 p-6 rounded-xl border-2 border-jampad/30 hover:border-jampad hover:shadow-[0_0_15px_rgba(0,246,255,0.5)] transition-all duration-300">
+                        <div class="text-jampad font-bold mb-2">1. Start the Jam</div>
+                        <p class="text-gray-300">
+                            Upload a piece of music (e.g., a guitar riff).
+                        </p>
+                    </div>
+                    <div class="flex-1 bg-gray-900 p-6 rounded-xl border-2 border-jampad/30 hover:border-jampad hover:shadow-[0_0_15px_rgba(0,246,255,0.5)] transition-all duration-300">
+                        <div class="text-jampad font-bold mb-2">2. Build on It</div>
+                        <p class="text-gray-300">
+                            Other users can add their recordings (e.g., drum cover, keyboard melody, vocals).
+                        </p>
+                    </div>
+                    <div class="flex-1 bg-gray-900 p-6 rounded-xl border-2 border-jampad/30 hover:border-jampad hover:shadow-[0_0_15px_rgba(0,246,255,0.5)] transition-all duration-300">
+                        <div class="text-jampad font-bold mb-2">3. Play as a Band</div>
+                        <p class="text-gray-300">
+                            Watch your track grow into a full band performance, all from the comfort of your home.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h3 class="text-3xl font-bold text-white mb-8">Why JamPad?</h3>
+                <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                    <div class="p-6 bg-gray-900 rounded-xl border-2 border-jampad/30 hover:border-jampad hover:shadow-[0_0_15px_rgba(0,246,255,0.5)] transition-all duration-300">
+                        <h4 class="text-jampad font-bold mb-2">No Need to Travel</h4>
+                        <p class="text-gray-300">
+                            Skip the hassle of finding local musicians to jam with.
+                        </p>
+                    </div>
+                    <div class="p-6 bg-gray-900 rounded-xl border-2 border-jampad/30 hover:border-jampad hover:shadow-[0_0_15px_rgba(0,246,255,0.5)] transition-all duration-300">
+                        <h4 class="text-jampad font-bold mb-2">Discover Talent</h4>
+                        <p class="text-gray-300">
+                            Connect with a global community of passionate musicians.
+                        </p>
+                    </div>
+                    <div class="p-6 bg-gray-900 rounded-xl border-2 border-jampad/30 hover:border-jampad hover:shadow-[0_0_15px_rgba(0,246,255,0.5)] transition-all duration-300">
+                        <h4 class="text-jampad font-bold mb-2">Jam Anytime</h4>
+                        <p class="text-gray-300">
+                            Perfect for busy schedules—make music when it suits you.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="mt-12 mb-20">
+                <a href="join.html" class="inline-block">
+                    <button class="bg-jampad text-gray-900 text-2xl font-bold px-12 py-4 rounded-xl 
+                                 hover:bg-jampad/80 hover:scale-105 transform transition-all duration-300 
+                                 shadow-lg shadow-jampad/30 hover:shadow-jampad/50">
+                        🎶 Join the Jam. Start Collaborating Today!
+                    </button>
+                </a>
+                <p class="text-xl text-gray-300 mt-4">
+                    Get ready to create, share, and collaborate in ways you never imagined.
+                </p>
+            </div>
+        </main>
+    </div>
+</body>
+</html> 
+<!-- New footer added -->
+<footer>Updated Footer</footer>
+<!-- New footer added -->
+<footer>Updated Footer</footer>

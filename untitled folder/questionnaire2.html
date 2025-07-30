@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JamPad - Tell Us About Yourself</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        jampad: '#00F6FF',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .bg-image {
+            background-image: url('/Users/krishgupta/Desktop/istockphoto-1391884768-612x612.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        
+        .bg-overlay {
+            background: linear-gradient(to bottom right, 
+                rgba(10, 15, 20, 0.92),
+                rgba(13, 17, 23, 0.95)
+            );
+        }
+
+        .genre-button.selected {
+            color: #00F6FF;
+            text-shadow: 0 0 10px rgba(0, 246, 255, 0.8);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-image">
+    <div class="bg-overlay min-h-screen">
+        <!-- Navigation -->
+        <nav class="p-6 flex justify-between items-center">
+            <a href="new-version.html" class="text-4xl font-bold text-jampad hover:text-jampad/80 transition-colors">JamPad</a>
+        </nav>
+
+        <!-- Questionnaire Form -->
+        <main class="container mx-auto px-4 py-12">
+            <div class="max-w-3xl mx-auto">
+                <h1 class="text-5xl font-bold text-white text-center mb-12">🎸 Let's Get to Know You! 🎵</h1>
+                
+                <form class="space-y-16">
+                    <!-- Instrument Choice -->
+                    <div class="group">
+                        <h2 class="text-3xl font-bold text-white mb-6">What's Your Instrument of Choice?</h2>
+                        <select class="w-full bg-gray-900/70 text-white rounded-lg p-4 
+                                   border-2 border-jampad/40 
+                                   hover:border-jampad focus:border-jampad focus:outline-none text-lg
+                                   shadow-[0_0_10px_rgba(0,246,255,0.1)]
+                                   hover:shadow-[0_0_15px_rgba(0,246,255,0.3)] transition-all duration-300">
+                            <option value="">Select your instrument...</option>
+                            <option value="guitar">Guitar</option>
+                            <option value="drums">Drums</option>
+                            <option value="vocals">Vocals</option>
+                            <option value="bass">Bass</option>
+                            <option value="keyboard">Keyboard/Piano</option>
+                            <option value="other">Something Unique</option>
+                        </select>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="group">
+                        <h2 class="text-3xl font-bold text-white mb-6">Where Are You Jamming From?</h2>
+                        <input type="text" placeholder="Share your city or country" 
+                               class="w-full bg-gray-900/70 text-white rounded-lg p-4 
+                                      border-2 border-jampad/40
+                                      hover:border-jampad focus:border-jampad focus:outline-none text-lg
+                                      shadow-[0_0_10px_rgba(0,246,255,0.1)]
+                                      hover:shadow-[0_0_15px_rgba(0,246,255,0.3)] transition-all duration-300">
+                    </div>
+
+                    <!-- Musical Mood -->
+                    <div class="group">
+                        <h2 class="text-3xl font-bold text-white mb-6">What's Your Musical Mood?</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 p-6 bg-gray-900/70 rounded-lg 
+                                    border-2 border-jampad/40
+                                    shadow-[0_0_10px_rgba(0,246,255,0.1)]
+                                    hover:shadow-[0_0_15px_rgba(0,246,255,0.3)]
+                                    hover:border-jampad transition-all duration-300">
+                            <button type="button" onclick="toggleGenre(this)" class="genre-button text-lg text-white p-3 rounded-lg hover:text-jampad transition-all duration-300">Rock</button>
+                            <button type="button" onclick="toggleGenre(this)" class="genre-button text-lg text-white p-3 rounded-lg hover:text-jampad transition-all duration-300">Jazz</button>
+                            <button type="button" onclick="toggleGenre(this)" class="genre-button text-lg text-white p-3 rounded-lg hover:text-jampad transition-all duration-300">Pop</button>
+                            <button type="button" onclick="toggleGenre(this)" class="genre-button text-lg text-white p-3 rounded-lg hover:text-jampad transition-all duration-300">Metal</button>
+                            <button type="button" onclick="toggleGenre(this)" class="genre-button text-lg text-white p-3 rounded-lg hover:text-jampad transition-all duration-300">Lo-Fi</button>
+                            <button type="button" onclick="toggleGenre(this)" class="genre-button text-lg text-white p-3 rounded-lg hover:text-jampad transition-all duration-300">Classical</button>
+                        </div>
+                        <input type="hidden" name="genres" id="selected-genres">
+                    </div>
+
+                    <!-- Musical Muse -->
+                    <div class="group">
+                        <h2 class="text-3xl font-bold text-white mb-6">Who's Your Musical Muse?</h2>
+                        <input type="text" placeholder="Which artist or band inspires you the most?" 
+                               class="w-full bg-gray-900/70 text-white rounded-lg p-4 
+                                      border-2 border-jampad/40
+                                      hover:border-jampad focus:border-jampad focus:outline-none text-lg
+                                      shadow-[0_0_10px_rgba(0,246,255,0.1)]
+                                      hover:shadow-[0_0_15px_rgba(0,246,255,0.3)] transition-all duration-300">
+                    </div>
+
+                    <!-- Jamming Style -->
+                    <div class="group">
+                        <h2 class="text-3xl font-bold text-white mb-6">How Do You Love to Jam?</h2>
+                        <select class="w-full bg-gray-900/70 text-white rounded-lg p-4 
+                                   border-2 border-jampad/40 
+                                   hover:border-jampad focus:border-jampad focus:outline-none text-lg
+                                   shadow-[0_0_10px_rgba(0,246,255,0.1)]
+                                   hover:shadow-[0_0_15px_rgba(0,246,255,0.3)] transition-all duration-300">
+                            <option value="">Choose your style...</option>
+                            <option value="solo">Flying Solo</option>
+                            <option value="friends">Jamming with Friends</option>
+                            <option value="online">Online Collaboration</option>
+                            <option value="all">All of the Above!</option>
+                        </select>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center pt-8 mb-20">
+                        <button type="submit" class="bg-jampad text-gray-900 text-2xl font-bold px-16 py-4 rounded-xl 
+                                                   hover:bg-jampad/80 hover:scale-105 transform transition-all duration-300 
+                                                   shadow-lg shadow-jampad/30 hover:shadow-jampad/50">
+                            Start Your Musical Journey
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleGenre(button) {
+            button.classList.toggle('selected');
+            updateSelectedGenres();
+        }
+
+        function updateSelectedGenres() {
+            const selectedButtons = document.querySelectorAll('.genre-button.selected');
+            const genres = Array.from(selectedButtons).map(button => button.textContent);
+            document.getElementById('selected-genres').value = genres.join(',');
+        }
+    </script>
+</body>
+</html> 
+<!-- New footer added -->
+<footer>Updated Footer for both files</footer>
+<!-- New footer added -->
+<footer>Updated Footer for both files</footer>

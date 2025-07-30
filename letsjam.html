@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JamPad - Let's Jam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neonBlue: '#00FFFF',
+                        deepCyan: '#00AEEF',
+                        jetBlack: '#0A0A0A',
+                        charcoal: '#121212',
+                        gunmetal: '#2A2A2A',
+                        elecPurple: '#8A2BE2',
+                        softWhite: '#EAEAEA'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .recording {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
+        }
+
+        /* Hide scrollbar but keep functionality */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#050507] via-[#070716] to-[#050507] min-h-screen text-softWhite">
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <div class="w-64 h-screen bg-gunmetal/30 border-r border-neonBlue/20 fixed left-0 top-0 backdrop-blur-sm z-50">
+            <!-- Logo -->
+            <div class="p-6 border-b border-neonBlue/20">
+                <h1 class="text-3xl font-bold text-neonBlue">JamPad</h1>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="py-6 px-4 space-y-2">
+                <!-- Friends -->
+                <a href="#" onclick="toggleFriendsModal()" class="flex items-center gap-4 p-3 rounded-lg hover:bg-neonBlue/10 transition-all group">
+                    <svg class="w-6 h-6 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <span class="font-medium group-hover:text-neonBlue transition-colors">Friends</span>
+                </a>
+
+                <!-- Studio -->
+                <a href="studio.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-elecPurple/10 transition-all group">
+                    <svg class="w-6 h-6 text-elecPurple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                    </svg>
+                    <span class="font-medium group-hover:text-elecPurple transition-colors">Studio</span>
+                </a>
+
+                <!-- My Bands -->
+                <a href="#" class="flex items-center gap-4 p-3 rounded-lg hover:bg-deepCyan/10 transition-all group">
+                    <svg class="w-6 h-6 text-deepCyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    <span class="font-medium group-hover:text-deepCyan transition-colors">My Bands</span>
+                </a>
+
+                <!-- Messages -->
+                <a href="#" class="flex items-center gap-4 p-3 rounded-lg hover:bg-neonBlue/10 transition-all group">
+                    <svg class="w-6 h-6 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                    </svg>
+                    <span class="font-medium group-hover:text-neonBlue transition-colors">Messages</span>
+                </a>
+
+                <!-- Explore -->
+                <a href="#" class="flex items-center gap-4 p-3 rounded-lg hover:bg-elecPurple/10 transition-all group">
+                    <svg class="w-6 h-6 text-elecPurple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <span class="font-medium group-hover:text-elecPurple transition-colors">Explore</span>
+                </a>
+
+                <!-- Add Search Musicians button -->
+                <a href="#" onclick="toggleSearchModal()" class="flex items-center gap-4 p-3 rounded-lg hover:bg-neonBlue/10 transition-all group">
+                    <svg class="w-6 h-6 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+                    </svg>
+                    <span class="font-medium group-hover:text-neonBlue transition-colors">Search Musicians</span>
+                </a>
+
+                <!-- Advanced Search Button -->
+                <a href="#" onclick="toggleAdvancedSearchModal()" class="flex items-center gap-4 p-3 rounded-lg hover:bg-elecPurple/10 transition-all group">
+                    <svg class="w-6 h-6 text-elecPurple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    <span class="font-medium group-hover:text-elecPurple transition-colors">Advanced Search</span>
+                </a>
+
+                <!-- Add Music Assistant Button Here -->
+                <a href="#" onclick="toggleMusicChat()" class="flex items-center gap-4 p-3 rounded-lg hover:bg-neonBlue/10 transition-all group">
+                    <svg class="w-6 h-6 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                    </svg>
+                    <span class="font-medium group-hover:text-neonBlue transition-colors">Music Assistant</span>
+                </a>
+            </nav>
+
+            <!-- Replace the existing User Profile section with this -->
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-neonBlue/20">
+                <a href="profile.html" class="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-neonBlue/10 transition-all group">
+                    <div class="w-8 h-8 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <span class="font-medium group-hover:text-neonBlue transition-colors">Profile</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="ml-64 flex-1 relative">
+            <!-- Fixed Header Area -->
+            <div class="fixed top-0 right-0 left-64 bg-[#050507]/95 backdrop-blur-md z-40 border-b border-neonBlue/20">
+                <div class="px-8 py-6">
+                    <h2 class="text-3xl font-bold text-neonBlue">JamPad</h2>
+                </div>
+            </div>
+            
+            <!-- Scrollable Content Area -->
+            <div class="mt-[88px] p-8 pt-6 space-y-12">
+                <!-- Friends Section -->
+                <div class="overflow-hidden">
+                    <h2 class="text-2xl font-bold mb-6 text-neonBlue">Friends</h2>
+                    <!-- Horizontal Scrollable Recordings -->
+                    <div class="relative -mx-8">
+                        <div class="flex overflow-x-auto pb-4 px-8 hide-scrollbar space-x-6">
+                            <!-- Recording 1 -->
+                            <div class="flex-none w-80 bg-gunmetal/70 rounded-xl overflow-hidden group hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] transition-all duration-300">
+                                <div class="relative">
+                                    <img src="hq720.jpg" alt="Recording session" class="w-full h-48 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-4 left-4 right-4">
+                                        <div class="flex items-center gap-2 bg-black/50 rounded-lg p-2 backdrop-blur-sm">
+                                            <div class="w-8 h-8 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                                                <span class="text-neonBlue">▶️</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="h-1 bg-neonBlue/30 rounded-full">
+                                                    <div class="w-1/3 h-full bg-neonBlue rounded-full"></div>
+                                                </div>
+                                            </div>
+                                            <span class="text-neonBlue text-sm">2:30</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="text-neonBlue font-bold">Blues Jam Session</h3>
+                                    <p class="text-gray-400 text-sm">Recorded 2 hours ago</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-elecPurple/20 text-elecPurple px-2 py-1 rounded-full">Guitar</span>
+                                        <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">Blues</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recording 2 -->
+                            <div class="flex-none w-80 bg-gunmetal/70 rounded-xl overflow-hidden group hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] transition-all duration-300">
+                                <div class="relative">
+                                    <img src="Open-Handed-Drumming-Everything-You-Need-to-Know.webp" alt="Drum session" class="w-full h-48 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-4 left-4 right-4">
+                                        <div class="flex items-center gap-2 bg-black/50 rounded-lg p-2 backdrop-blur-sm">
+                                            <div class="w-8 h-8 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                                                <span class="text-neonBlue">▶️</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="h-1 bg-neonBlue/30 rounded-full">
+                                                    <div class="w-1/2 h-full bg-neonBlue rounded-full"></div>
+                                                </div>
+                                            </div>
+                                            <span class="text-neonBlue text-sm">3:45</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="text-neonBlue font-bold">Drum Solo Practice</h3>
+                                    <p class="text-gray-400 text-sm">Recorded yesterday</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-elecPurple/20 text-elecPurple px-2 py-1 rounded-full">Drums</span>
+                                        <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">Rock</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recording 3 -->
+                            <div class="flex-none w-80 bg-gunmetal/70 rounded-xl overflow-hidden group hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] transition-all duration-300">
+                                <div class="relative">
+                                    <img src="download (1).jpeg" alt="Bass session" class="w-full h-48 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-4 left-4 right-4">
+                                        <div class="flex items-center gap-2 bg-black/50 rounded-lg p-2 backdrop-blur-sm">
+                                            <div class="w-8 h-8 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                                                <span class="text-neonBlue">▶️</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="h-1 bg-neonBlue/30 rounded-full">
+                                                    <div class="w-2/3 h-full bg-neonBlue rounded-full"></div>
+                                                </div>
+                                            </div>
+                                            <span class="text-neonBlue text-sm">4:15</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="text-neonBlue font-bold">Funky Bass Line</h3>
+                                    <p class="text-gray-400 text-sm">Recorded 3 days ago</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-elecPurple/20 text-elecPurple px-2 py-1 rounded-full">Bass</span>
+                                        <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">Funk</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recording 4 -->
+                            <div class="flex-none w-80 bg-gunmetal/70 rounded-xl overflow-hidden group hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] transition-all duration-300">
+                                <div class="relative">
+                                    <img src="download.jpeg" alt="Keyboard session" class="w-full h-48 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-4 left-4 right-4">
+                                        <div class="flex items-center gap-2 bg-black/50 rounded-lg p-2 backdrop-blur-sm">
+                                            <div class="w-8 h-8 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                                                <span class="text-neonBlue">▶️</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="h-1 bg-neonBlue/30 rounded-full">
+                                                    <div class="w-3/4 h-full bg-neonBlue rounded-full"></div>
+                                                </div>
+                                            </div>
+                                            <span class="text-neonBlue text-sm">5:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="text-neonBlue font-bold">Piano Composition</h3>
+                                    <p class="text-gray-400 text-sm">Recorded 1 week ago</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-elecPurple/20 text-elecPurple px-2 py-1 rounded-full">Piano</span>
+                                        <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">Classical</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Jams Section -->
+                <div class="overflow-hidden">
+                    <h2 class="text-2xl font-bold mb-6 text-elecPurple">Top Jams</h2>
+                    <!-- Horizontal Scrollable Recordings -->
+                    <div class="relative -mx-8">
+                        <div class="flex overflow-x-auto pb-4 px-8 hide-scrollbar space-x-6">
+                            <!-- Recording 1 -->
+                            <div class="flex-none w-80 bg-gunmetal/70 rounded-xl overflow-hidden group hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] transition-all duration-300">
+                                <div class="relative">
+                                    <img src="Open-Handed-Drumming-Everything-You-Need-to-Know.webp" alt="Top Jam session" class="w-full h-48 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-4 left-4 right-4">
+                                        <div class="flex items-center gap-2 bg-black/50 rounded-lg p-2 backdrop-blur-sm">
+                                            <div class="w-8 h-8 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                                                <span class="text-neonBlue">▶️</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="h-1 bg-neonBlue/30 rounded-full">
+                                                    <div class="w-1/3 h-full bg-neonBlue rounded-full"></div>
+                                                </div>
+                                            </div>
+                                            <span class="text-neonBlue text-sm">3:15</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="text-neonBlue font-bold">Epic Drum Solo</h3>
+                                    <p class="text-gray-400 text-sm">Trending Now</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-elecPurple/20 text-elecPurple px-2 py-1 rounded-full">Drums</span>
+                                        <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">Rock</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recording 2 -->
+                            <div class="flex-none w-80 bg-gunmetal/70 rounded-xl overflow-hidden group hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] transition-all duration-300">
+                                <div class="relative">
+                                    <img src="hq720.jpg" alt="Guitar session" class="w-full h-48 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-4 left-4 right-4">
+                                        <div class="flex items-center gap-2 bg-black/50 rounded-lg p-2 backdrop-blur-sm">
+                                            <div class="w-8 h-8 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                                                <span class="text-neonBlue">▶️</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="h-1 bg-neonBlue/30 rounded-full">
+                                                    <div class="w-1/2 h-full bg-neonBlue rounded-full"></div>
+                                                </div>
+                                            </div>
+                                            <span class="text-neonBlue text-sm">3:45</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="text-neonBlue font-bold">Guitar Riff Masters</h3>
+                                    <p class="text-gray-400 text-sm">Featured Today</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-elecPurple/20 text-elecPurple px-2 py-1 rounded-full">Guitar</span>
+                                        <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">Metal</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Battle of Bands Section -->
+                <div class="overflow-hidden">
+                    <h2 class="text-2xl font-bold mb-6 text-deepCyan">Battle of Bands</h2>
+                    <!-- Horizontal Scrollable Recordings -->
+                    <div class="relative -mx-8">
+                        <div class="flex overflow-x-auto pb-4 px-8 hide-scrollbar space-x-6">
+                            <!-- Battle 1 -->
+                            <div class="flex-none w-80 bg-gunmetal/70 rounded-xl overflow-hidden group hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] transition-all duration-300">
+                                <div class="relative">
+                                    <img src="download (1).jpeg" alt="Band Battle" class="w-full h-48 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-4 left-4 right-4">
+                                        <div class="flex items-center gap-2 bg-black/50 rounded-lg p-2 backdrop-blur-sm">
+                                            <div class="w-8 h-8 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                                                <span class="text-neonBlue">🎸</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="h-1 bg-neonBlue/30 rounded-full">
+                                                    <div class="w-2/3 h-full bg-neonBlue rounded-full"></div>
+                                                </div>
+                                            </div>
+                                            <span class="text-neonBlue text-sm">Live</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="text-neonBlue font-bold">Rock Titans Showdown</h3>
+                                    <p class="text-gray-400 text-sm">Live Battle - Vote Now!</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-elecPurple/20 text-elecPurple px-2 py-1 rounded-full">Battle</span>
+                                        <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">Rock</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Battle 2 -->
+                            <div class="flex-none w-80 bg-gunmetal/70 rounded-xl overflow-hidden group hover:shadow-[0_0_20px_rgba(0,255,255,0.3)] transition-all duration-300">
+                                <div class="relative">
+                                    <img src="download.jpeg" alt="Jazz Battle" class="w-full h-48 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-4 left-4 right-4">
+                                        <div class="flex items-center gap-2 bg-black/50 rounded-lg p-2 backdrop-blur-sm">
+                                            <div class="w-8 h-8 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                                                <span class="text-neonBlue">🎸</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="h-1 bg-neonBlue/30 rounded-full">
+                                                    <div class="w-2/3 h-full bg-neonBlue rounded-full"></div>
+                                                </div>
+                                            </div>
+                                            <span class="text-neonBlue text-sm">Starting in 2 hours</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="text-neonBlue font-bold">Jazz Fusion Face-off</h3>
+                                    <p class="text-gray-400 text-sm">Starting in 2 hours</p>
+                                    <div class="flex gap-2 mt-2">
+                                        <span class="text-xs bg-elecPurple/20 text-elecPurple px-2 py-1 rounded-full">Battle</span>
+                                        <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">Jazz</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isRecording = false;
+        let mediaRecorder;
+        let audioChunks = [];
+
+        async function toggleRecording() {
+            const button = document.getElementById('recordButton');
+            const status = document.getElementById('recordingStatus');
+
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = (event) => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        // Here you can handle the recorded audio (e.g., save it or play it back)
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    button.classList.add('recording');
+                    button.textContent = 'Stop Recording 🎵';
+                    status.classList.remove('hidden');
+                } catch (err) {
+                    console.error('Error accessing microphone:', err);
+                    alert('Unable to access microphone. Please check permissions.');
+                }
+            } else {
+                mediaRecorder.stop();
+                isRecording = false;
+                button.classList.remove('recording');
+                button.textContent = 'LETS JAM 🎸';
+                status.classList.add('hidden');
+            }
+        }
+    </script>
+    <!-- Remove these duplicate sections -->
+    <!-- Add this in your navigation section -->
+    <a href="profile.html" class="block px-4 py-2 text-softWhite hover:bg-neonBlue/10 rounded-lg transition-all">
+        👤 Profile
+    </a>
+    
+    <!-- Add this modal at the end of your body tag -->
+    <div id="searchModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-gunmetal/90 p-8 rounded-xl border border-neonBlue/20 w-96">
+            <h2 class="text-2xl font-bold text-neonBlue mb-6">Search Musicians</h2>
+            
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="text-softWhite block mb-2">Instrument</label>
+                    <input type="text" id="searchInstrument" class="w-full bg-charcoal text-softWhite border border-neonBlue/20 rounded-lg p-2">
+                </div>
+                <div>
+                    <label class="text-softWhite block mb-2">Genre</label>
+                    <input type="text" id="searchGenre" class="w-full bg-charcoal text-softWhite border border-neonBlue/20 rounded-lg p-2">
+                </div>
+                <div>
+                    <label class="text-softWhite block mb-2">Minimum Jams</label>
+                    <input type="number" id="searchMinJams" min="0" class="w-full bg-charcoal text-softWhite border border-neonBlue/20 rounded-lg p-2">
+                </div>
+            </div>
+    
+            <div class="flex space-x-4">
+                <button onclick="searchMusicians()" class="flex-1 bg-neonBlue/20 text-neonBlue px-4 py-2 rounded-lg hover:bg-neonBlue/30">Search</button>
+                <button onclick="toggleSearchModal()" class="flex-1 bg-gunmetal text-softWhite px-4 py-2 rounded-lg hover:bg-gunmetal/70">Close</button>
+            </div>
+    
+            <div id="searchResults" class="mt-6 space-y-4 max-h-60 overflow-y-auto"></div>
+        </div>
+    </div>
+    
+    <!-- Add this script -->
+    <script>
+    function toggleSearchModal() {
+        const modal = document.getElementById('searchModal');
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+    }
+    
+    async function searchMusicians() {
+        const instrument = document.getElementById('searchInstrument').value;
+        const genre = document.getElementById('searchGenre').value;
+        const minJams = document.getElementById('searchMinJams').value;
+    
+        const params = new URLSearchParams();
+        if (instrument) params.append('instrument', instrument);
+        if (genre) params.append('genre', genre);
+        if (minJams) params.append('minJams', minJams);
+    
+        try {
+            const response = await fetch(`/api/search?${params}`);
+            const users = await response.json();
+            displaySearchResults(users);
+        } catch (error) {
+            console.error('Search error:', error);
+            alert('Error searching musicians');
+        }
+    }
+    
+    function displaySearchResults(users) {
+        const resultsDiv = document.getElementById('searchResults');
+        resultsDiv.innerHTML = '';
+    
+        if (users.length === 0) {
+            resultsDiv.innerHTML = '<p class="text-softWhite/60">No musicians found</p>';
+            return;
+        }
+    
+        users.forEach(user => {
+            const userCard = document.createElement('div');
+            userCard.className = 'bg-gunmetal/50 p-4 rounded-lg border border-neonBlue/20';
+            userCard.innerHTML = `
+                <h3 class="text-lg font-bold text-neonBlue">${user.username}</h3>
+                <p class="text-softWhite/60">Instruments: ${user.instruments || 'Not specified'}</p>
+                <p class="text-softWhite/60">Genres: ${user.genres || 'Not specified'}</p>
+                <p class="text-softWhite/60">Total Jams: ${user.jam_count}</p>
+            `;
+            resultsDiv.appendChild(userCard);
+        });
+    }
+    </script>
+    <!-- Add this in the navigation section, after the Search Musicians button -->
+    <a href="#" onclick="toggleAdvancedSearchModal()" class="flex items-center gap-4 p-3 rounded-lg hover:bg-elecPurple/10 transition-all group">
+    <svg class="w-6 h-6 text-elecPurple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+    </svg>
+    <span class="font-medium group-hover:text-elecPurple transition-colors">Advanced Search</span>
+    </a>
+    
+    <!-- Add this at the end of the body, before the closing body tag -->
+    <!-- Advanced Search Modal -->
+    <div id="advancedSearchModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+    <div class="bg-gunmetal/90 p-8 rounded-xl border-2 border-neonBlue/30 max-w-2xl w-full mx-4">
+    <h2 class="text-2xl font-bold text-neonBlue mb-6">Advanced Search</h2>
+    
+    <!-- Search Form -->
+    <form id="advancedSearchForm" class="space-y-6">
+    <div>
+    <label class="block text-softWhite mb-2">Description</label>
+    <textarea 
+        class="w-full bg-charcoal/50 rounded-lg p-3 border border-neonBlue/30 h-24 text-softWhite" 
+        placeholder="Describe what you're looking for (e.g., 'Need synth player for lo-fi beat')"
+        id="searchDescription"
+    ></textarea>
+    </div>
+    
+    <div class="grid grid-cols-2 gap-4">
+    <div>
+    <label class="block text-softWhite mb-2">Genre</label>
+    <select id="searchGenre" class="w-full bg-charcoal/50 rounded-lg p-3 border border-neonBlue/30 text-softWhite">
+        <option value="">Any</option>
+        <option value="Rock">Rock</option>
+        <option value="Jazz">Jazz</option>
+        <option value="Electronic">Electronic</option>
+        <option value="Classical">Classical</option>
+        <option value="Hip Hop">Hip Hop</option>
+        <option value="Metal">Metal</option>
+        <option value="Blues">Blues</option>
+    </select>
+    </div>
+    
+    <div>
+    <label class="block text-softWhite mb-2">Instrument Needed</label>
+    <select id="searchInstrument" class="w-full bg-charcoal/50 rounded-lg p-3 border border-neonBlue/30 text-softWhite">
+        <option value="">Any</option>
+        <option value="Guitar">Guitar</option>
+        <option value="Bass">Bass</option>
+        <option value="Drums">Drums</option>
+        <option value="Piano">Piano</option>
+        <option value="Synth">Synth</option>
+        <option value="Vocals">Vocals</option>
+    </select>
+    </div>
+    </div>
+    
+    <div class="flex justify-end gap-4">
+    <button type="button" onclick="toggleAdvancedSearchModal()" 
+            class="px-6 py-3 rounded-lg border border-neonBlue/30 text-neonBlue hover:bg-neonBlue/10">
+        Cancel
+    </button>
+    <button type="submit" 
+            class="px-6 py-3 rounded-lg bg-neonBlue text-black font-bold hover:bg-deepCyan">
+        Search
+    </button>
+    </div>
+    </form>
+    
+    <!-- Results Section -->
+    <div id="searchResults" class="mt-8 hidden">
+    <h3 class="text-xl font-bold text-neonBlue mb-4">Recommended Musicians</h3>
+    <div class="space-y-4" id="recommendationsList">
+    <!-- Results will be populated here -->
+    </div>
+    </div>
+    </div>
+    </div>
+    <!-- Add this script for the advanced search functionality -->
+    <script>
+    async function handleAdvancedSearch(event) {
+        event.preventDefault();
+
+        const description = document.getElementById('searchDescription').value;
+        const genre = document.getElementById('searchGenre').value;
+        const instrument = document.getElementById('searchInstrument').value;
+
+        // Show loading popup immediately
+        showRagResultsPopup(`
+            <div class="text-center p-4">
+                <div class="animate-pulse text-neonBlue">Searching for compatible musicians...</div>
+            </div>
+        `);
+
+        try {
+            const response = await fetch('/api/rag-search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ description, genre, instrument })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || data.error) {
+                throw new Error(data.error || 'Error performing search');
+            }
+
+            // Ensure recommendations is an array
+            const recs = Array.isArray(data.recommendations)
+                ? data.recommendations
+                : (data.recommendations && Array.isArray(data.recommendations.recommendations))
+                    ? data.recommendations.recommendations
+                    : [];
+
+            if (recs.length > 0) {
+                showRagResultsPopup(
+                    recs.map(rec => `
+                        <div class="bg-charcoal/50 p-4 rounded-lg border border-neonBlue/30 mb-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                                    <span class="text-2xl">🎵</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-neonBlue font-bold">${rec.username || "Unknown Musician"}</h4>
+                                    <p class="text-sm text-gray-300">${rec.reason || rec.recommendation_reason || "No reason provided."}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')
+                );
+            } else {
+                showRagResultsPopup(`
+                    <div class="text-center p-4">
+                        <p class="text-softWhite/60">No matching musicians found.</p>
+                    </div>
+                `);
+            }
+        } catch (error) {
+            showRagResultsPopup(`
+                <div class="text-center p-4">
+                    <p class="text-red-500">Error: ${error.message}</p>
+                </div>
+            `);
+        }
+    }
+
+    // Attach the event listener after DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        const advancedSearchForm = document.getElementById('advancedSearchForm');
+        if (advancedSearchForm) {
+            advancedSearchForm.addEventListener('submit', handleAdvancedSearch);
+        }
+    });
+
+    // Update the toggle function for the advanced search modal
+    function toggleAdvancedSearchModal() {
+        const modal = document.getElementById('advancedSearchModal');
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+    }
+    </script>
+    <!-- Friends Modal -->
+    <div id="friendsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-gunmetal/90 p-8 rounded-xl border-2 border-neonBlue/30 max-w-2xl w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-neonBlue">Friends</h2>
+                <button onclick="toggleFriendsModal()" class="text-softWhite hover:text-neonBlue">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="mb-6">
+                <input type="text" placeholder="Search users..." id="friendSearch" 
+                       class="w-full bg-charcoal/50 rounded-lg p-3 border border-neonBlue/30 text-softWhite">
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex gap-4 mb-6">
+                <button class="px-4 py-2 rounded-lg bg-neonBlue/10 text-neonBlue hover:bg-neonBlue/20 active-tab" 
+                        onclick="switchTab('friends')">My Friends</button>
+                <button class="px-4 py-2 rounded-lg bg-neonBlue/10 text-neonBlue hover:bg-neonBlue/20" 
+                        onclick="switchTab('requests')">Friend Requests</button>
+                <button class="px-4 py-2 rounded-lg bg-neonBlue/10 text-neonBlue hover:bg-neonBlue/20" 
+                        onclick="switchTab('discover')">Discover</button>
+            </div>
+
+            <!-- Content Area -->
+            <div class="max-h-[60vh] overflow-y-auto hide-scrollbar">
+                <div id="friendsList" class="space-y-4">
+                    <!-- Friends will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFriendsModal() {
+            const modal = document.getElementById('friendsModal');
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+        }
+
+        function switchTab(tab) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.active-tab').forEach(el => el.classList.remove('active-tab'));
+            // Add active class to clicked tab
+            event.target.classList.add('active-tab');
+            
+            // Show loading state
+            const friendsList = document.getElementById('friendsList');
+            friendsList.innerHTML = `
+                <div class="text-center text-softWhite/60">
+                    <div class="animate-pulse">Loading ${tab}...</div>
+                </div>
+            `;
+            
+            // Fetch data
+            fetchFriendsData(tab);
+        }
+
+        async function fetchFriendsData(tab) {
+            try {
+                let endpoint = '';
+                switch(tab) {
+                    case 'discover':
+                        endpoint = '/api/users/all';
+                        break;
+                    case 'requests':
+                        endpoint = '/api/friends/requests';
+                        break;
+                    default:
+                        endpoint = '/api/friends';
+                        break;
+                }
+
+                console.log('Fetching from endpoint:', endpoint);
+
+                const response = await fetch(endpoint, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('Received data:', data);
+                displayFriends(data, tab);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                const friendsList = document.getElementById('friendsList');
+                friendsList.innerHTML = `<div class="text-center text-red-500">Error loading ${tab}: ${error.message}</div>`;
+            }
+        }
+
+        function displayFriends(users, tab) {
+            const friendsList = document.getElementById('friendsList');
+            
+            if (!users || users.length === 0) {
+                friendsList.innerHTML = `<div class="text-center text-softWhite/60">No ${tab === 'discover' ? 'users' : tab} found</div>`;
+                return;
+            }
+            
+            friendsList.innerHTML = users.map(user => `
+                <div class="bg-charcoal/50 p-4 rounded-lg border border-neonBlue/30 mb-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                                <span class="text-2xl">🎵</span>
+                            </div>
+                            <div>
+                                <h4 class="text-neonBlue font-bold">${user.username}</h4>
+                                <p class="text-sm text-gray-300">
+                                    ${user.preferred_instruments ? 'Instruments: ' + user.preferred_instruments : 'No instruments listed'}
+                                </p>
+                                <p class="text-sm text-gray-300">
+                                    ${user.preferred_genres ? 'Genres: ' + user.preferred_genres : 'No genres listed'}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            ${tab === 'discover' ? `
+                                <button onclick="sendFriendRequest('${user.id}')" 
+                                        class="px-4 py-2 rounded-lg bg-elecPurple/10 text-elecPurple hover:bg-elecPurple/20">
+                                    Add Friend
+                                </button>
+                            ` : ''}
+                            <button onclick="viewProfile('${user.id}')" 
+                                    class="px-4 py-2 rounded-lg bg-neonBlue/10 text-neonBlue hover:bg-neonBlue/20">
+                                View Profile
+                            </button>
+                            <button onclick="viewStudio('${user.id}')" 
+                                    class="px-4 py-2 rounded-lg bg-deepCyan/10 text-deepCyan hover:bg-deepCyan/20">
+                                View Studio
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add search functionality
+        document.getElementById('friendSearch').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const items = document.querySelectorAll('#friendsList > div');
+            
+            items.forEach(item => {
+                const username = item.querySelector('h4').textContent.toLowerCase();
+                const instruments = item.querySelector('p').textContent.toLowerCase();
+                const genres = item.querySelectorAll('p')[1]?.textContent.toLowerCase() || '';
+                
+                const matches = username.includes(searchTerm) || 
+                               instruments.includes(searchTerm) || 
+                               genres.includes(searchTerm);
+                               
+                item.style.display = matches ? 'block' : 'none';
+            });
+        });
+
+        // Add these new functions for friend requests
+        async function sendFriendRequest(userId) {
+            try {
+                const response = await fetch('/api/friends/request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ friendId: userId })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    // Show success message
+                    showNotification('Friend request sent successfully!', 'success');
+                    // Optionally refresh the discover list
+                    fetchFriendsData('discover');
+                } else {
+                    showNotification(data.error || 'Failed to send friend request', 'error');
+                }
+            } catch (error) {
+                console.error('Error sending friend request:', error);
+                showNotification('Failed to send friend request', 'error');
+            }
+        }
+
+        // Add notification function
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg z-50 ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            } text-white`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Add profile viewing function
+        function viewProfile(userId) {
+            // You can implement this to show a profile modal or navigate to a profile page
+            window.location.href = `/profile.html?id=${userId}`;
+        }
+
+        // Add this function to handle viewing user's studio
+        function viewStudio(userId) {
+            window.location.href = `/user-studio.html?id=${userId}`;
+        }
+    </script>
+
+    <!-- Music Chat Modal -->
+    <div id="musicChatModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-gunmetal/90 p-8 rounded-xl border-2 border-neonBlue/30 max-w-2xl w-full mx-4 h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-neonBlue">Music Assistant</h2>
+                <button onclick="toggleMusicChat()" class="text-softWhite hover:text-neonBlue">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Chat Messages -->
+            <div id="chatMessages" class="flex-1 overflow-y-auto mb-4 space-y-4 hide-scrollbar">
+                <div class="bg-charcoal/50 p-4 rounded-lg">
+                    <p class="text-neonBlue">Hi! I'm your music assistant. Ask me anything about music!</p>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <form id="chatForm" class="flex gap-2">
+                <input type="text" 
+                       placeholder="Ask about music, genres, instruments..." 
+                       class="flex-1 bg-charcoal/50 rounded-lg p-3 border border-neonBlue/30 text-softWhite"
+                       id="chatInput"
+                       required>
+                <button type="submit" 
+                        class="px-6 py-2 rounded-lg bg-neonBlue text-black font-bold hover:bg-deepCyan">
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add chat button to navigation -->
+    <a href="#" onclick="toggleMusicChat()" class="flex items-center gap-4 p-3 rounded-lg hover:bg-neonBlue/10 transition-all group">
+        <svg class="w-6 h-6 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+        </svg>
+        <span class="font-medium group-hover:text-neonBlue transition-colors">Music Assistant</span>
+    </a>
+
+    <!-- Add chat functionality -->
+    <script>
+    function toggleMusicChat() {
+        const modal = document.getElementById('musicChatModal');
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+    }
+
+    function addMessageToChat(role, content) {
+        const messages = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        
+        // Special styling for error messages (messages starting with ⚠️)
+        const isError = content.startsWith('⚠️');
+        
+        messageDiv.className = `p-4 rounded-lg ${
+            role === 'user' 
+                ? 'bg-neonBlue/10 ml-8' 
+                : isError 
+                    ? 'bg-red-500/10 mr-8' 
+                    : 'bg-charcoal/50 mr-8'
+        }`;
+        
+        messageDiv.innerHTML = `<p class="text-${
+            role === 'user' 
+                ? 'softWhite' 
+                : isError 
+                    ? 'red-400' 
+                    : 'neonBlue'
+        }">${content}</p>`;
+        
+        messages.appendChild(messageDiv);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    async function handleChatSubmit(e) {
+        e.preventDefault();
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        if (!message) return;
+
+        // Disable the input and button while processing
+        const submitButton = e.target.querySelector('button');
+        input.disabled = true;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending...';
+        
+        // Add user message to chat
+        addMessageToChat('user', message);
+        
+        try {
+            const response = await fetch('/api/music-chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ message })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'An error occurred while processing your request.');
+            }
+
+            if (!data.response) {
+                throw new Error('No response received from the assistant.');
+            }
+
+            addMessageToChat('assistant', data.response);
+
+        } catch (error) {
+            console.error('Chat error:', error);
+            addMessageToChat('assistant', `⚠️ ${error.message}`);
+        } finally {
+            // Re-enable the input and button
+            input.disabled = false;
+            submitButton.disabled = false;
+            submitButton.textContent = 'Send';
+            input.value = '';
+            input.focus();
+        }
+    }
+
+    // Update the event listener setup
+    document.addEventListener('DOMContentLoaded', () => {
+        const chatForm = document.getElementById('chatForm');
+        if (chatForm) {
+            chatForm.addEventListener('submit', handleChatSubmit);
+        }
+    });
+    </script>
+
+    <!-- RAG Results Popup -->
+    <div id="ragResultsPopup" class="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999] hidden">
+      <div class="bg-gunmetal/90 border-2 border-neonBlue/30 rounded-xl p-8 max-w-lg w-full shadow-2xl relative">
+        <button onclick="closeRagResultsPopup()" class="absolute top-4 right-4 text-neonBlue hover:text-elecPurple text-2xl font-bold">&times;</button>
+        <h3 class="text-2xl font-bold text-neonBlue mb-6">Recommended Musicians</h3>
+        <div id="ragResultsContent" class="space-y-4"></div>
+      </div>
+    </div>
+
+    <script>
+    function showRagResultsPopup(html) {
+        const popup = document.getElementById('ragResultsPopup');
+        const content = document.getElementById('ragResultsContent');
+        content.innerHTML = html;
+        popup.classList.remove('hidden');
+    }
+
+    function closeRagResultsPopup() {
+        document.getElementById('ragResultsPopup').classList.add('hidden');
+    }
+    </script>
+</body>
+</html>

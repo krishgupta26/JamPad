@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JamPad - Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neonBlue: '#00FFFF',
+                        deepCyan: '#00AEEF',
+                        jetBlack: '#0A0A0A',
+                        charcoal: '#121212',
+                        gunmetal: '#2A2A2A',
+                        elecPurple: '#8A2BE2',
+                        softWhite: '#EAEAEA'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .recording {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .jamover-cyberpunk {
+            background: #A259FF;         /* New purple */
+            color: #71F7FF;              /* Neon blue text */
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 0.5rem 1.5rem;
+            box-shadow: none;
+            text-shadow: none;
+            transition: background 0.15s, color 0.15s, transform 0.12s;
+        }
+        .jamover-cyberpunk:hover {
+            background: #8e3ee6;
+            color: #fff;
+            transform: scale(1.04);
+        }
+        .recording-box {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: rgba(42,42,42,0.5);
+            border-radius: 0.75rem;
+            border: 1px solid #00FFFF33;
+            transition: box-shadow 0.2s;
+            position: relative;
+        }
+        .recording-bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .recording-instrument {
+            font-size: 2rem;
+            margin-left: 0.5rem;
+        }
+        .recording-date {
+            font-size: 0.75rem;
+            color: #7f8fa6;
+            opacity: 0.7;
+            margin-bottom: 0.25rem;
+            display: inline-block;
+        }
+        .jamover-btn-container {
+            /* No absolute positioning */
+        }
+        .letsjam-gradient {
+            background: #00FFFF;
+            color: #0A0A0A;
+            font-weight: bold;
+            border: none;
+            border-radius: 0.5rem;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 2px 16px 0 #00FFFF33;
+        }
+        .letsjam-gradient:hover {
+            transform: scale(1.04);
+            box-shadow: 0 4px 24px 0 #00FFFF33;
+            background: #00e0e0;
+        }
+    </style>
+</head>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    neonBlue: '#00FFFF',
+                    deepCyan: '#00AEEF',
+                    jetBlack: '#0A0A0A',
+                    charcoal: '#121212',
+                    gunmetal: '#2A2A2A',
+                    elecPurple: '#8A2BE2',
+                    softWhite: '#EAEAEA'
+                }
+            }
+        }
+    }
+</script>
+<style>
+    .recording {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.7); }
+        70% { box-shadow: 0 0 0 20px rgba(0, 255, 255, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
+    }
+</style>
+
+<!-- Update body class -->
+<body class="bg-gradient-to-br from-[#050507] via-[#070716] to-[#050507] min-h-screen text-softWhite">
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <div class="w-64 h-screen bg-gunmetal/30 border-r border-neonBlue/20 fixed left-0 top-0 backdrop-blur-sm z-50">
+            <!-- Logo -->
+            <div class="p-6 border-b border-neonBlue/20">
+                <h1 class="text-3xl font-bold text-neonBlue">JamPad</h1>
+            </div>
+
+            <!-- Navigation Links - Simplified to just Home and Friends -->
+            <nav class="py-6 px-4 space-y-2">
+                <!-- Home (which links to letsjam.html) -->
+                <a href="letsjam.html" class="flex items-center gap-4 p-3 rounded-lg hover:bg-neonBlue/10 transition-all group">
+                    <svg class="w-6 h-6 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    <span class="font-medium group-hover:text-neonBlue transition-colors">Home</span>
+                </a>
+
+                <!-- Friends - same as in letsjam.html -->
+                <a href="#" onclick="toggleFriendsModal()" class="flex items-center gap-4 p-3 rounded-lg hover:bg-neonBlue/10 transition-all group">
+                    <svg class="w-6 h-6 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <span class="font-medium group-hover:text-neonBlue transition-colors">Friends</span>
+                </a>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-neonBlue/20">
+                <a href="profile.html" class="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-neonBlue/10 transition-all group">
+                    <div class="w-8 h-8 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <span class="font-medium group-hover:text-neonBlue transition-colors">Profile</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="ml-64 flex-1 p-8">
+            <div class="space-y-8">
+                <!-- Record New Track Section -->
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-neonBlue">Record New Track</h2>
+                    <button id="recordButton" onclick="toggleRecording()" class="letsjam-gradient px-6 py-3 text-lg">
+                        LETS JAM 🎸
+                    </button>
+                </div>
+                <div id="recordingStatus" class="hidden px-8 py-2 text-elecPurple">
+                    Recording in progress...
+                </div>
+
+                <!-- My Jams Section -->
+                <div id="myJamsContainer" class="mt-8">
+                    <h2 class="text-2xl font-bold text-elecPurple mb-6">My Jams</h2>
+                    <div class="grid grid-cols-3 gap-6">
+                        <!-- Recordings will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Wrap the Drafts section with a div that has an ID -->
+                <div id="draftsSection" class="mt-8 space-y-12">
+                    <div id="userSpecificJams">
+                        <!-- Other users' jams sections will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- New Jam Session -->
+                <div class="mt-8">
+                    <h2 class="text-2xl font-bold text-deepCyan mb-6">New Jam Session</h2>
+                    <div class="bg-gunmetal/70 rounded-xl p-6">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="p-4 bg-charcoal rounded-lg border border-neonBlue/20">
+                                <h3 class="text-neonBlue mb-2">Session Name</h3>
+                                <input type="text" placeholder="Enter session name" class="w-full bg-gunmetal text-softWhite border border-neonBlue/20 rounded-lg p-2">
+                            </div>
+                            <div class="p-4 bg-charcoal rounded-lg border border-deepCyan/20">
+                                <h3 class="text-deepCyan mb-2">Genre</h3>
+                                <select class="w-full bg-gunmetal text-softWhite border border-deepCyan/20 rounded-lg p-2">
+                                    <option>Rock</option>
+                                    <option>Jazz</option>
+                                    <option>Blues</option>
+                                    <option>Pop</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="mt-6 px-6 py-3 bg-deepCyan/20 text-deepCyan rounded-lg hover:bg-deepCyan/30 transition-all">
+                            Create Session
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Same recording functionality as page1
+        let isRecording = false;
+        let mediaRecorder;
+        let audioChunks = [];
+
+        // Move these functions outside
+        async function loadRecordings() {
+            try {
+                // Get the user ID from the URL if present (for viewing other users' studios)
+                const urlParams = new URLSearchParams(window.location.search);
+                const viewingUserId = urlParams.get('id');
+                
+                // Determine which endpoint to use based on whether we're viewing another user's studio
+                const endpoint = viewingUserId 
+                    ? `/api/recordings/${viewingUserId}` 
+                    : '/api/recordings';
+                
+                const response = await fetch(endpoint, {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}`);
+                }
+                
+                const recordings = await response.json();
+                const recordingsContainer = document.querySelector('#myJamsContainer .grid');
+                
+                if (!recordingsContainer) {
+                    console.error('Could not find My Jams container');
+                    return;
+                }
+                
+                if (!recordings || recordings.length === 0) {
+                    recordingsContainer.innerHTML = `
+                        <div class="col-span-3 text-center py-8">
+                            <p class="text-softWhite/60">No recordings yet.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // If viewing another user's studio, don't show delete buttons
+                const isOwnStudio = !viewingUserId;
+                
+                recordingsContainer.innerHTML = recordings.map(rec => {
+                    const menuId = `recording-menu-${rec.id}`;
+                    return `
+                    <div class="recording-box bg-gunmetal/50 p-6 rounded-lg border border-neonBlue/20 hover:shadow-[0_0_15px_rgba(0,255,255,0.3)] transition-all flex flex-col h-full relative">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-neonBlue font-bold text-xl mr-4">${rec.title || 'Untitled Recording'}</h4>
+                            ${isOwnStudio ? `
+                                <div class="relative">
+                                    <button 
+                                        onclick="event.stopPropagation(); toggleMenu(${rec.id}, 'recording')" 
+                                        class="text-neonBlue hover:text-neonBlue/80 transition-colors menu-button"
+                                        title="Actions">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                                        </svg>
+                                    </button>
+                                    <div id="${menuId}" class="action-menu hidden absolute right-0 top-6 mt-1 w-48 bg-gunmetal rounded-md shadow-lg border border-neonBlue/30 z-10 p-2 space-y-1">
+                                        <button 
+                                            onclick="event.stopPropagation(); renameRecording(${rec.id}, '${rec.title || 'Untitled Recording'}', 'recording'); toggleMenu(${rec.id}, 'recording');" 
+                                            class="w-full text-left px-3 py-1.5 text-sm text-neonBlue hover:bg-neonBlue/10 rounded flex items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>
+                                            Rename
+                                        </button>
+                                        <button 
+                                            onclick="event.stopPropagation(); deleteRecording(${rec.id}, '${rec.title}'); toggleMenu(${rec.id}, 'recording');" 
+                                            class="w-full text-left px-3 py-1.5 text-sm text-red-500 hover:bg-red-500/10 rounded flex items-center gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="mt-auto w-full">
+                            <div class="bg-charcoal/50 rounded-lg p-4 mb-3">
+                                <audio controls class="w-full">
+                                    <source src="/recordings/${rec.filename}" type="audio/wav">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                        </div>
+                        <div class="recording-bottom-bar">
+                            <div>
+                                <span class="recording-date">${new Date(rec.created_at).toLocaleString()}</span>
+                                <span class="recording-instrument">${getInstrumentEmoji(rec.instrument)}</span>
+                            </div>
+                            <div class="jamover-btn-container">
+                                <button 
+                                    onclick="recordOver('${rec.filename}', '${rec.title || 'Untitled Recording'}', '${rec.instrument}', ${rec.id})" 
+                                    class="jamover-cyberpunk">
+                                    🎵 Jam Over
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Error loading recordings:', error);
+                const recordingsContainer = document.querySelector('#myJamsContainer .grid');
+                recordingsContainer.innerHTML = `
+                    <div class="col-span-3 text-center py-8">
+                        <p class="text-red-500">Error loading recordings. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function playRecording(filename) {
+            const audio = new Audio(`http://localhost:3000/recordings/${filename}`);
+            audio.play().catch(error => {
+                console.error('Error playing audio:', error);
+                alert('Error playing recording');
+            });
+        }
+
+        async function toggleRecording() {
+            const button = document.getElementById('recordButton');
+            const status = document.getElementById('recordingStatus');
+
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = (event) => {
+                        audioChunks.push(event.data);
+                    };
+
+                    // Update the mediaRecorder.onstop handler in your script section
+                    mediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        
+                        // Store the blob for later use
+                        window.newRecordingBlob = audioBlob;
+                        
+                        // Create an audio URL for preview
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        
+                        // Set up the preview modal
+                        const previewAudio = document.getElementById('previewNewRecordingAudio');
+                        previewAudio.src = audioUrl;
+                        
+                        // Set default title with date/time
+                        document.getElementById('newRecordingTitle').value = 'Jam ' + new Date().toLocaleString();
+                        
+                        // Set the instrument from the select
+                        const instrument = document.querySelector('select').value || 'Guitar';
+                        document.getElementById('newRecordingInstrument').value = instrument;
+                        
+                        // Show the preview modal
+                        const modal = document.getElementById('previewNewRecordingModal');
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                        
+                        // Auto-play the preview
+                        previewAudio.play();
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    button.classList.add('recording');
+                    button.textContent = 'Stop Recording 🎵';
+                    status.classList.remove('hidden');
+                } catch (err) {
+                    console.error('Error accessing microphone:', err);
+                    alert('Unable to access microphone. Please check permissions.');
+                }
+            } else {
+                mediaRecorder.stop();
+                isRecording = false;
+                button.classList.remove('recording');
+                button.textContent = 'LETS JAM 🎸';
+                status.classList.add('hidden');
+            }
+        }
+
+        // Load recordings when page loads
+        document.addEventListener('DOMContentLoaded', loadRecordings);
+
+        // Add a global variable to store the current user's username
+        let currentUsername = 'You'; // Default value
+
+        // Update the DOMContentLoaded event handler
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Get current user info
+                const currentUser = await getCurrentUser();
+                if (currentUser && currentUser.username) {
+                    currentUsername = currentUser.username; // Store the username
+                }
+                
+                // Get the user ID from the URL if present (for viewing other users' studios)
+                const urlParams = new URLSearchParams(window.location.search);
+                const viewingUserId = urlParams.get('id');
+                
+                // Load recordings (either your own or another user's)
+                await loadRecordings();
+                
+                // Only show drafts section and new jam session section if viewing own studio
+                if (!viewingUserId) {
+                    // User is viewing their own studio, show drafts section
+                    document.getElementById('draftsSection').classList.remove('hidden');
+                    await loadOtherUserDrafts();
+                    
+                    // Show new jam session section
+                    document.querySelector('.mt-8:nth-of-type(3)').classList.remove('hidden');
+                } else {
+                    // User is viewing someone else's studio, hide drafts section
+                    document.getElementById('draftsSection').classList.add('hidden');
+                    
+                    // Hide new jam session section
+                    document.querySelector('.mt-8:nth-of-type(3)').classList.add('hidden');
+                    
+                    // Hide the record new track section
+                    document.querySelector('.flex.justify-between.items-center').classList.add('hidden');
+                    document.getElementById('recordingStatus').classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Error initializing studio page:', error);
+            }
+        });
+
+        // Update the drafts section HTML structure
+        // document.getElementById('draftsSection').innerHTML = `
+        //     <h2 class="text-2xl font-bold text-deepCyan mb-6">My Jam Sessions</h2>
+        //     <div id="otherUserDrafts" class="space-y-8">
+        //         <!-- Drafts will be loaded here -->
+        //     </div>
+        // `;
+
+        async function loadOtherUserDrafts() {
+            try {
+                const userSpecificJamsContainer = document.getElementById('userSpecificJams');
+                
+                if (!userSpecificJamsContainer) {
+                    console.error('Required container not found');
+                    return;
+                }
+
+                const currentUser = await getCurrentUser();
+                if (!currentUser) {
+                    userSpecificJamsContainer.innerHTML = `
+                        <div class="text-center py-8">
+                            <p class="text-softWhite/60">Please log in to view drafts</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const response = await fetch('/api/drafts/from-others', { 
+                    credentials: 'include',
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}`);
+                }
+
+                const drafts = await response.json();
+                if (!drafts || drafts.length === 0) {
+                    userSpecificJamsContainer.innerHTML = `
+                        <div class="text-center py-8">
+                            <p class="text-softWhite/60">No jams with other musicians yet. Try jamming on recordings from other users!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Group drafts by original user
+                const draftsByUser = {};
+                drafts.forEach(draft => {
+                    const originalUser = draft.original_username;
+                    if (!draftsByUser[originalUser]) {
+                        draftsByUser[originalUser] = [];
+                    }
+                    draftsByUser[originalUser].push(draft);
+                });
+                
+                // Create HTML for user-specific sections
+                let userSectionsHtml = '';
+                Object.keys(draftsByUser).forEach(username => {
+                    userSectionsHtml += `
+                        <div class="mt-12 first:mt-0">
+                            <h2 class="text-2xl font-bold text-elecPurple mb-6">${username}'s Jams</h2>
+                            <div class="grid grid-cols-3 gap-6">
+                                ${draftsByUser[username].map(draft => {
+                                    const menuId = `userjam-menu-${draft.id}`;
+                                    return `
+                                    <div class="recording-box bg-gunmetal/50 p-6 rounded-lg border border-neonBlue/20 hover:shadow-[0_0_15px_rgba(0,255,255,0.3)] transition-all flex flex-col h-full relative">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <h4 class="text-neonBlue font-bold text-xl mr-4">${draft.title || 'Untitled Draft'}</h4>
+                                            <div class="relative">
+                                                <button 
+                                                    onclick="event.stopPropagation(); toggleMenu(${draft.id}, 'userjam')" 
+                                                    class="text-neonBlue hover:text-neonBlue/80 transition-colors menu-button"
+                                                    title="Actions">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                                                    </svg>
+                                                </button>
+                                                <div id="${menuId}" class="action-menu hidden absolute right-0 top-6 mt-1 w-48 bg-gunmetal rounded-md shadow-lg border border-neonBlue/30 z-10 p-2 space-y-1">
+                                                    <button 
+                                                        onclick="event.stopPropagation(); renameRecording(${draft.id}, '${draft.title || 'Untitled Draft'}', 'draft'); toggleMenu(${draft.id}, 'userjam');" 
+                                                        class="w-full text-left px-3 py-1.5 text-sm text-neonBlue hover:bg-neonBlue/10 rounded flex items-center gap-2">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>
+                                                        Rename
+                                                    </button>
+                                                    <button 
+                                                        onclick="event.stopPropagation(); deleteRecording(${draft.id}, '${draft.title}'); toggleMenu(${draft.id}, 'userjam');" 
+                                                        class="w-full text-left px-3 py-1.5 text-sm text-red-500 hover:bg-red-500/10 rounded flex items-center gap-2">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-auto w-full">
+                                            <div class="bg-charcoal/50 rounded-lg p-4 mb-3">
+                                                <!-- Standard audio controls player -->
+                                                <audio controls class="w-full">
+                                                    <source src="/recordings/${draft.filename}" type="audio/wav">
+                                                    Your browser does not support the audio element.
+                                                </audio>
+                                            </div>
+                                        </div>
+                                        <div class="recording-bottom-bar">
+                                            <div>
+                                                <span class="recording-date">${new Date(draft.created_at).toLocaleString()}</span>
+                                                <span class="recording-instrument">${getInstrumentEmoji(draft.original_instrument)} + ${getInstrumentEmoji(draft.instrument)}</span>
+                                            </div>
+                                            <div class="jamover-btn-container">
+                                                <button 
+                                                    onclick="recordOver('${draft.filename}', '${draft.title || 'Untitled Draft'}', '${draft.instrument}', ${draft.id}, '${draft.original_instrument || ''}')" 
+                                                    class="jamover-cyberpunk">
+                                                    🎵 Jam Over
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                userSpecificJamsContainer.innerHTML = userSectionsHtml;
+                
+            } catch (error) {
+                console.error('Error loading drafts from other users:', error);
+                const errorMessage = error.message || 'Error loading drafts';
+                const userSpecificJamsContainer = document.getElementById('userSpecificJams');
+                if (userSpecificJamsContainer) {
+                    userSpecificJamsContainer.innerHTML = `
+                        <div class="text-center py-8">
+                            <p class="text-red-500">Error loading drafts: ${errorMessage}</p>
+                            <button onclick="loadOtherUserDrafts()" class="mt-4 px-4 py-2 bg-elecPurple/20 text-elecPurple rounded-lg hover:bg-elecPurple/30 transition-all">
+                                Try Again
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Add this function at the top of your script section to check if a user is viewing their own studio
+        async function getCurrentUser() {
+            try {
+                const response = await fetch('/api/user', {
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch current user');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching current user:', error);
+                return null;
+            }
+        }
+
+        // Add this function to handle recording deletion
+        async function deleteRecording(recordingId, title) {
+            if (!confirm(`Are you sure you want to delete "${title || 'Untitled Recording'}"? This cannot be undone.`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/recordings/${recordingId}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Recording deleted successfully', 'success');
+                    // Reload the recordings to update the display
+                    await loadRecordings();
+                    await loadOtherUserDrafts();
+                } else {
+                    showNotification(data.error || 'Failed to delete recording', 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting recording:', error);
+                showNotification('Error deleting recording', 'error');
+            }
+        }
+
+        // Add the notification function if it doesn't exist
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            
+            let bgColor;
+            switch(type) {
+                case 'success':
+                    bgColor = 'bg-green-500';
+                    break;
+                case 'error':
+                    bgColor = 'bg-red-500';
+                    break;
+                default:
+                    bgColor = 'bg-gray-500';
+            }
+            
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg z-50 ${bgColor} text-white`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Add the audioError function
+        function audioError(audioElement, filename) {
+            console.error('Error loading audio file:', filename);
+            showNotification(`Error playing audio: ${filename}`, 'error');
+            
+            // Show more detailed error in the console
+            console.log('Audio element error details:', audioElement.error);
+            console.log('Audio source path:', `/recordings/${filename}`);
+        }
+
+        // Add this function to handle direct playback
+        function playDirectly(filename) {
+            const audioUrl = `/recordings/${filename}`;
+            console.log('Trying to play directly:', audioUrl);
+            
+            const audio = new Audio(audioUrl);
+            
+            audio.onerror = (e) => {
+                console.error('Direct playback error:', e);
+                showNotification(`Error playing: ${filename}`, 'error');
+            };
+            
+            audio.onloadeddata = () => {
+                console.log('Audio loaded successfully');
+                showNotification('Audio loaded successfully', 'success');
+            };
+            
+            audio.play()
+                .then(() => console.log('Playback started'))
+                .catch(err => {
+                    console.error('Play error:', err);
+                    showNotification(`Playback error: ${err.message}`, 'error');
+                });
+        }
+
+        // Add these variables after the existing ones
+        let currentOriginalFilename = null;
+        let currentOriginalTitle = null;
+        let currentOriginalInstrument = null;
+        let currentOriginalId = null;
+        let overdubAudioChunks = [];
+        let overdubMediaRecorder = null;
+        let isRecordingOver = false;
+        let audioContext = null;
+        let mixedAudioBuffer = null;
+
+        // Update the recordOver function to ensure currentOriginalId is a number
+        function recordOver(filename, title, instrument, id, originalInstrument = '') {
+            currentOriginalFilename = filename;
+            currentOriginalTitle = title || 'Untitled';
+            currentOriginalInstrument = originalInstrument || instrument || 'Unknown';
+            
+            // Make sure ID is a number
+            currentOriginalId = typeof id === 'number' ? id : parseInt(id, 10);
+            
+            console.log('Recording over track:', {
+                filename,
+                title,
+                instrument,
+                id: currentOriginalId,
+                originalInstrument: currentOriginalInstrument
+            });
+            
+            // Set up the modal
+            document.getElementById('recordingTitle').textContent = `Recording over: ${title || 'Untitled'}`;
+            const audioPlayer = document.getElementById('playbackAudio');
+            audioPlayer.src = `/recordings/${filename}`;
+            audioPlayer.load();
+            
+            // Reset the preview section
+            document.getElementById('previewSection').classList.add('hidden');
+            document.getElementById('recordOverButton').textContent = 'Start Recording';
+            document.getElementById('recordingStatusModal').classList.add('hidden');
+            
+            // Show the modal
+            const modal = document.getElementById('recordOverModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Add this function to close the modal
+        function closeRecordOverModal() {
+            // Stop recording if active
+            if (isRecordingOver && overdubMediaRecorder) {
+                overdubMediaRecorder.stop();
+                isRecordingOver = false;
+            }
+            
+            // Stop playback
+            const audioPlayer = document.getElementById('playbackAudio');
+            audioPlayer.pause();
+            
+            // Hide the modal
+            const modal = document.getElementById('recordOverModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Add event listener for the record over button
+        document.addEventListener('DOMContentLoaded', function() {
+            const recordOverButton = document.getElementById('recordOverButton');
+            recordOverButton.addEventListener('click', toggleRecordOver);
+            
+            const saveOverdubButton = document.getElementById('saveOverdubButton');
+            saveOverdubButton.addEventListener('click', saveOverdub);
+        });
+
+        // Function to start/stop recording over
+        async function toggleRecordOver() {
+            const button = document.getElementById('recordOverButton');
+            const status = document.getElementById('recordingStatusModal');
+            const playbackAudio = document.getElementById('playbackAudio');
+            
+            if (!isRecordingOver) {
+                try {
+                    // Get audio stream
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    
+                    // Set up the recorder
+                    overdubMediaRecorder = new MediaRecorder(stream);
+                    overdubAudioChunks = [];
+                    
+                    // Set up AudioContext for mixing
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    
+                    overdubMediaRecorder.ondataavailable = (event) => {
+                        overdubAudioChunks.push(event.data);
+                    };
+                    
+                    overdubMediaRecorder.onstop = async () => {
+                        // Create a blob of the recorded audio
+                        const audioBlob = new Blob(overdubAudioChunks, { type: 'audio/wav' });
+                        
+                        // Create a mixed version of the audio (original + overdub)
+                        await createMixedAudio(audioBlob);
+                    };
+                    
+                    // Start recording
+                    overdubMediaRecorder.start();
+                    
+                    // Start playback
+                    playbackAudio.currentTime = 0;
+                    playbackAudio.play();
+                    
+                    // Update UI
+                    isRecordingOver = true;
+                    button.textContent = 'Stop Recording';
+                    status.classList.remove('hidden');
+                    
+                } catch (err) {
+                    console.error('Error accessing microphone:', err);
+                    showNotification('Unable to access microphone. Please check permissions.', 'error');
+                }
+            } else {
+                // Stop recording
+                overdubMediaRecorder.stop();
+                
+                // Pause playback
+                playbackAudio.pause();
+                
+                // Update UI
+                isRecordingOver = false;
+                button.textContent = 'Start Recording';
+                status.classList.add('hidden');
+            }
+        }
+
+        // Add this new function to create a mixed audio file
+        async function createMixedAudio(newRecordingBlob) {
+            try {
+                showNotification('Processing audio mix...', 'info');
+                
+                // Get the original audio file
+                const originalAudioResponse = await fetch(`/recordings/${currentOriginalFilename}`);
+                const originalAudioBlob = await originalAudioResponse.blob();
+                
+                // Create audio buffers from both files
+                const originalAudioBuffer = await audioBufferFromBlob(originalAudioBlob);
+                const newRecordingBuffer = await audioBufferFromBlob(newRecordingBlob);
+                
+                // Create a new buffer for the mixed audio
+                // Use the longer of the two durations
+                const mixedLength = Math.max(originalAudioBuffer.duration, newRecordingBuffer.duration);
+                mixedAudioBuffer = audioContext.createBuffer(
+                    2, // stereo
+                    audioContext.sampleRate * mixedLength,
+                    audioContext.sampleRate
+                );
+                
+                // Mix the two audio buffers
+                // Copy original audio
+                const originalLeft = originalAudioBuffer.getChannelData(0);
+                const originalRight = originalAudioBuffer.numberOfChannels > 1 ? 
+                    originalAudioBuffer.getChannelData(1) : originalAudioBuffer.getChannelData(0);
+                    
+                // Copy new recording
+                const newLeft = newRecordingBuffer.getChannelData(0);
+                const newRight = newRecordingBuffer.numberOfChannels > 1 ? 
+                    newRecordingBuffer.getChannelData(1) : newRecordingBuffer.getChannelData(0);
+                    
+                // Get mixed channels
+                const mixedLeft = mixedAudioBuffer.getChannelData(0);
+                const mixedRight = mixedAudioBuffer.getChannelData(1);
+                
+                // Mix the channels (original + new recording)
+                const originalSamples = originalAudioBuffer.length;
+                const newSamples = newRecordingBuffer.length;
+                const mixedSamples = mixedAudioBuffer.length;
+                
+                for (let i = 0; i < mixedSamples; i++) {
+                    // Add original audio (if within its length)
+                    if (i < originalSamples) {
+                        mixedLeft[i] = originalLeft[i];
+                        mixedRight[i] = originalRight[i];
+                    }
+                    
+                    // Add new recording (if within its length)
+                    if (i < newSamples) {
+                        mixedLeft[i] += newLeft[i];
+                        mixedRight[i] += newRight[i];
+                    }
+                    
+                    // Normalize to prevent clipping
+                    mixedLeft[i] = Math.max(-1, Math.min(1, mixedLeft[i]));
+                    mixedRight[i] = Math.max(-1, Math.min(1, mixedRight[i]));
+                }
+                
+                // Convert the mixed buffer to a blob
+                const mixedBlob = await audioBufferToBlob(mixedAudioBuffer);
+                
+                // Create an audio URL for preview
+                const mixedAudioUrl = URL.createObjectURL(mixedBlob);
+                const previewAudio = document.getElementById('previewAudio');
+                previewAudio.src = mixedAudioUrl;
+                
+                // Show the preview section
+                document.getElementById('previewSection').classList.remove('hidden');
+                
+                // Store the blob for later use
+                window.recordedOverdubBlob = mixedBlob;
+                
+                showNotification('Audio mixed successfully!', 'success');
+            } catch (error) {
+                console.error('Error mixing audio:', error);
+                showNotification('Error creating audio mix', 'error');
+            }
+        }
+
+        // Helper function to convert a blob to an AudioBuffer
+        async function audioBufferFromBlob(blob) {
+            const arrayBuffer = await blob.arrayBuffer();
+            return await audioContext.decodeAudioData(arrayBuffer);
+        }
+
+        // Helper function to convert an AudioBuffer to a Blob
+        async function audioBufferToBlob(audioBuffer) {
+            return new Promise((resolve) => {
+                const offlineContext = new OfflineAudioContext(
+                    audioBuffer.numberOfChannels,
+                    audioBuffer.length,
+                    audioBuffer.sampleRate
+                );
+                
+                const source = offlineContext.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(offlineContext.destination);
+                source.start(0);
+                
+                offlineContext.startRendering().then((renderedBuffer) => {
+                    const wavData = audioBufferToWav(renderedBuffer);
+                    const blob = new Blob([wavData], { type: 'audio/wav' });
+                    resolve(blob);
+                });
+            });
+        }
+
+        // Add the audioBufferToWav function to convert AudioBuffer to WAV format
+        function audioBufferToWav(buffer) {
+            // Format info: http://soundfile.sapp.org/doc/WaveFormat/
+            
+            function setUint16(data, offset, value) {
+                data.setUint16(offset, value, true);
+            }
+            
+            function setUint32(data, offset, value) {
+                data.setUint32(offset, value, true);
+            }
+            
+            const numOfChan = buffer.numberOfChannels;
+            const length = buffer.length * numOfChan * 2;
+            const sampleRate = buffer.sampleRate;
+            const bitsPerSample = 16;
+            const byteRate = sampleRate * numOfChan * bitsPerSample / 8;
+            const blockAlign = numOfChan * bitsPerSample / 8;
+            
+            const wavBuffer = new ArrayBuffer(44 + length);
+            const view = new DataView(wavBuffer);
+            
+            // RIFF identifier
+            writeString(view, 0, 'RIFF');
+            // file length minus RIFF identifier length and file description length
+            setUint32(view, 4, 36 + length);
+            // RIFF type
+            writeString(view, 8, 'WAVE');
+            
+            // format chunk identifier
+            writeString(view, 12, 'fmt ');
+            // format chunk length
+            setUint32(view, 16, 16);
+            // sample format (raw)
+            setUint16(view, 20, 1);
+            // channel count
+            setUint16(view, 22, numOfChan);
+            // sample rate
+            setUint32(view, 24, sampleRate);
+            // byte rate (sample rate * block align)
+            setUint32(view, 28, byteRate);
+            // block align (channel count * bytes per sample)
+            setUint16(view, 32, blockAlign);
+            // bits per sample
+            setUint16(view, 34, bitsPerSample);
+            
+            // data chunk identifier
+            writeString(view, 36, 'data');
+            // data chunk length
+            setUint32(view, 40, length);
+            
+            // Write the PCM samples
+            const offsetStart = 44;
+            const channels = [];
+            for (let i = 0; i < numOfChan; i++) {
+                channels.push(buffer.getChannelData(i));
+            }
+            
+            let offset = offsetStart;
+            for (let i = 0; i < buffer.length; i++) {
+                for (let channel = 0; channel < numOfChan; channel++) {
+                    // Clamp sample to -1.0 .. 1.0 range
+                    const sample = Math.max(-1, Math.min(1, channels[channel][i]));
+                    // Convert to 16-bit signed integer
+                    const int = sample < 0 ? sample * 32768 : sample * 32767;
+                    // Write 16-bit sample
+                    view.setInt16(offset, int, true);
+                    offset += 2;
+                }
+            }
+            
+            return wavBuffer;
+        }
+
+        // Helper function to write a string to a DataView
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+
+        // Update the saveOverdub function
+        async function saveOverdub() {
+            if (!window.recordedOverdubBlob) {
+                showNotification('No recording to save', 'error');
+                return;
+            }
+            
+            try {
+                const newInstrument = document.getElementById('overdubInstrument').value || 'Guitar'; 
+
+                // Create form data for submission
+                const formData = new FormData();
+                formData.append('audio', window.recordedOverdubBlob, 'overdub.wav');
+                formData.append('title', `Overdub of ${currentOriginalTitle}`);
+                formData.append('instrument', newInstrument);
+                formData.append('originalId', currentOriginalId);
+                formData.append('originalInstrument', currentOriginalInstrument);
+                
+                // Log the data being sent
+                console.log('Saving overdub with data:', {
+                    title: `Overdub of ${currentOriginalTitle}`,
+                    instrument: newInstrument,
+                    originalId: currentOriginalId,
+                    originalInstrument: currentOriginalInstrument,
+                    blobSize: window.recordedOverdubBlob.size
+                });
+                
+                showNotification('Saving overdub...', 'info');
+                
+                const response = await fetch('http://localhost:3000/api/save-overdub', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('Server response:', data); // Add this line to debug
+
+                if (data.success) {
+                    showNotification('Overdub saved successfully!', 'success');
+                    closeRecordOverModal();
+                    await loadOtherUserDrafts(); // This will refresh the drafts display
+                } else {
+                    throw new Error(data.error || 'Failed to save overdub');
+                }
+
+            } catch (error) {
+                console.error('Error saving overdub:', error);
+                showNotification('Error saving overdub: ' + error.message, 'error');
+            }
+        }
+
+        // Function to open the rename modal
+        function renameRecording(id, currentTitle, type) {
+            console.log('Opening rename modal for:', {id, currentTitle, type});
+            
+            document.getElementById('recordingId').value = id;
+            document.getElementById('newTitle').value = currentTitle;
+            document.getElementById('recordingType').value = type;
+            document.getElementById('renameType').textContent = type === 'recording' ? 'Recording' : 'Draft';
+            
+            // Set appropriate styling based on type
+            const modal = document.getElementById('renameModal');
+            const headerText = document.querySelector('#renameModal h2');
+            const saveButton = document.querySelector('#renameModal button:last-child');
+            
+            if (type === 'recording') {
+                headerText.classList.remove('text-deepCyan');
+                headerText.classList.add('text-neonBlue');
+                saveButton.classList.remove('bg-deepCyan', 'hover:bg-deepCyan/80');
+                saveButton.classList.add('bg-neonBlue', 'hover:bg-neonBlue/80');
+            } else {
+                headerText.classList.remove('text-neonBlue');
+                headerText.classList.add('text-deepCyan');
+                saveButton.classList.remove('bg-neonBlue', 'hover:bg-neonBlue/80');
+                saveButton.classList.add('bg-deepCyan', 'hover:bg-deepCyan/80');
+            }
+            
+            // Show the modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Focus the input field
+            setTimeout(() => {
+                document.getElementById('newTitle').focus();
+            }, 100);
+        }
+
+        // Function to close the rename modal
+        function closeRenameModal() {
+            const modal = document.getElementById('renameModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Update the submitRename function with more robust error handling and full URL
+        async function submitRename() {
+            const id = document.getElementById('recordingId').value;
+            const newTitle = document.getElementById('newTitle').value.trim();
+            const type = document.getElementById('recordingType').value;
+            
+            if (!newTitle) {
+                showNotification('Title cannot be empty', 'error');
+                return;
+            }
+            
+            try {
+                showNotification('Saving new title...', 'info');
+                
+                // Use the full URL path to ensure the endpoint is correctly reached
+                const response = await fetch(`http://localhost:3000/api/recordings/${id}/rename`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ title: newTitle })
+                });
+                
+                if (!response.ok) {
+                    let errorText;
+                    try {
+                        errorText = await response.text();
+                    } catch (e) {
+                        errorText = `HTTP error ${response.status}`;
+                    }
+                    console.error('Server response error:', errorText);
+                    throw new Error(errorText || `Server returned ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(`${type === 'recording' ? 'Recording' : 'Draft'} renamed successfully`, 'success');
+                    closeRenameModal();
+                    
+                    // Reload the appropriate section
+                    if (type === 'recording') {
+                        await loadRecordings();
+                    } else {
+                        await loadOtherUserDrafts();
+                    }
+                } else {
+                    throw new Error(data.error || 'Failed to rename recording');
+                }
+            } catch (error) {
+                console.error('Error renaming recording:', error);
+                showNotification(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Add Enter key support for the rename form
+        document.addEventListener('DOMContentLoaded', function() {
+            const titleInput = document.getElementById('newTitle');
+            titleInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    submitRename();
+                }
+            });
+        });
+
+        // Add these functions to handle the preview modal
+
+        // Function to close the preview modal
+        function closePreviewNewRecordingModal() {
+            const modal = document.getElementById('previewNewRecordingModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            
+            // Stop audio playback
+            const audio = document.getElementById('previewNewRecordingAudio');
+            audio.pause();
+            
+            // Clear the blob reference
+            window.newRecordingBlob = null;
+        }
+
+        // Function to save the new recording with custom title
+        async function saveNewRecording() {
+            // Get the audio blob stored from the recording
+            const audioBlob = window.newRecordingBlob;
+            
+            if (!audioBlob) {
+                showNotification('No recording to save', 'error');
+                return;
+            }
+            
+            // Get the title and instrument
+            const title = document.getElementById('newRecordingTitle').value.trim() || 'Untitled Recording';
+            const instrument = document.getElementById('newRecordingInstrument').value || 'Guitar';
+            
+            try {
+                // Create form data for submission
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'recording.wav');
+                formData.append('title', title);
+                formData.append('instrument', instrument);
+                
+                // Show saving notification
+                showNotification('Saving recording...', 'info');
+                
+                // Send to server
+                const response = await fetch('http://localhost:3000/api/save-recording', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                
+                // Check response status
+                if (!response.ok) {
+                    let errorMessage;
+                    try {
+                        const errorData = await response.text();
+                        console.error('Server error response:', errorData);
+                        errorMessage = `Server error (${response.status}): ${errorData}`;
+                    } catch (e) {
+                        errorMessage = `Server error (${response.status})`;
+                    }
+                    showNotification(errorMessage, 'error');
+                    return;
+                }
+                
+                // Parse response
+                const data = await response.json();
+                
+                if (data.success || data.id) {
+                    // Success message
+                    showNotification('Recording saved successfully!', 'success');
+                    
+                    // Close modal
+                    closePreviewNewRecordingModal();
+                    
+                    // Reload recordings to show the new one
+                    await loadRecordings();
+                } else {
+                    const errorMsg = data.error || 'Failed to save recording';
+                    console.error('Save recording error:', errorMsg);
+                    showNotification(errorMsg, 'error');
+                }
+            } catch (error) {
+                console.error('Error saving recording:', error);
+                showNotification('Error saving recording: ' + error.message, 'error');
+            }
+        }
+
+        // Add Enter key support for the recording title input
+        document.addEventListener('DOMContentLoaded', function() {
+            const recordingTitleInput = document.getElementById('newRecordingTitle');
+            if (recordingTitleInput) {
+                recordingTitleInput.addEventListener('keyup', function(event) {
+                    if (event.key === 'Enter') {
+                        saveNewRecording();
+                    }
+                });
+            }
+        });
+
+        // Add this function to toggle the Friends modal
+        function toggleFriendsModal() {
+            const modal = document.getElementById('friendsModal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        // Add this helper function to map instrument names to emojis
+        function getInstrumentEmoji(instrumentName) {
+            const lowerInstrument = (instrumentName || '').toLowerCase();
+            switch (lowerInstrument) {
+                case 'guitar': return '🎸';
+                case 'bass': return '🎸'; // Using guitar as placeholder, you can change to another emoji
+                case 'drums': return '🥁';
+                case 'keyboard': return '🎹';
+                case 'vocal': return '🎤';
+                case 'rock': return '🎸';
+                default: return '🎧';
+            }
+        }
+
+        // Add this function to handle the dropdown menus
+        function toggleMenu(id, type) {
+            const menuId = `${type}-menu-${id}`;
+            const menu = document.getElementById(menuId);
+            
+            // Close all other menus first
+            document.querySelectorAll('.action-menu').forEach(m => {
+                if (m.id !== menuId && !m.classList.contains('hidden')) {
+                    m.classList.add('hidden');
+                }
+            });
+            
+            // Toggle the clicked menu
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+
+        // Add a click listener to close menus when clicking outside
+        document.addEventListener('click', function(event) {
+            // Check if the click was outside of any menu button or menu content
+            const isMenuButton = event.target.closest('.menu-button');
+            const isMenuContent = event.target.closest('.action-menu');
+            
+            if (!isMenuButton && !isMenuContent) {
+                document.querySelectorAll('.action-menu').forEach(menu => {
+                    if (!menu.classList.contains('hidden')) {
+                        menu.classList.add('hidden');
+                    }
+                });
+            }
+        });
+
+        function togglePlayback(audioId, btn) {
+            const audio = document.getElementById(audioId);
+            if (!audio) return;
+            if (audio.paused) {
+                // Pause all other audios
+                document.querySelectorAll('audio').forEach(a => { if (a !== audio) a.pause(); });
+                audio.play();
+                btn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <rect x="6" y="4" width="4" height="16" rx="1"/>
+                        <rect x="14" y="4" width="4" height="16" rx="1"/>
+                    </svg>
+                `;
+                audio.onended = () => {
+                    btn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-6.518-3.759A1 1 0 007 8.06v7.879a1 1 0 001.234.97l6.518-1.857A1 1 0 0016 14.06V9.94a1 1 0 00-1.248-.772z" />
+                        </svg>
+                    `;
+                };
+            } else {
+                audio.pause();
+                btn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-6.518-3.759A1 1 0 007 8.06v7.879a1 1 0 001.234.97l6.518-1.857A1 1 0 0016 14.06V9.94a1 1 0 00-1.248-.772z" />
+                    </svg>
+                `;
+            }
+        }
+    </script>
+
+    <!-- Record Over Modal -->
+    <div id="recordOverModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-gunmetal/90 p-8 rounded-xl border-2 border-elecPurple/30 max-w-2xl w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-elecPurple">Record Over Track</h2>
+                <button onclick="closeRecordOverModal()" class="text-softWhite hover:text-elecPurple">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-xl text-elecPurple mb-2" id="recordingTitle">Loading...</h3>
+                
+                <div class="bg-charcoal/50 rounded-lg p-4 mb-4">
+                    <audio id="playbackAudio" controls class="w-full" loop>
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                    <div id="recordingStatusModal" class="text-elecPurple hidden">
+                        Recording in progress...
+                    </div>
+                    <button id="recordOverButton" class="px-6 py-3 bg-elecPurple/20 text-elecPurple rounded-lg hover:bg-elecPurple/30 transition-all">
+                        Start Recording
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mt-4 hidden" id="previewSection">
+                <h3 class="text-lg text-elecPurple mb-2">Preview & Details:</h3>
+                <div class="bg-charcoal/50 rounded-lg p-4">
+                    <audio id="previewAudio" controls class="w-full">
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+
+                <!-- Add Instrument Selector -->
+                <div class="mt-4">
+                    <label for="overdubInstrument" class="block text-elecPurple mb-2">Your Instrument:</label>
+                    <select id="overdubInstrument" class="w-full bg-charcoal text-softWhite border border-elecPurple/30 rounded-lg p-3 focus:border-elecPurple focus:outline-none">
+                        <option value="Guitar">Guitar</option>
+                        <option value="Bass">Bass</option>
+                        <option value="Drums">Drums</option>
+                        <option value="Keyboard">Keyboard</option>
+                        <option value="Vocal">Vocal</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="flex justify-between mt-6">
+                    <button onclick="closeRecordOverModal()" class="px-6 py-3 border border-elecPurple/30 text-elecPurple rounded-lg hover:bg-elecPurple/10">
+                        Cancel
+                    </button>
+                    <button id="saveOverdubButton" class="px-6 py-3 bg-elecPurple text-white rounded-lg hover:bg-elecPurple/80">
+                        Save Overdub
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Modal -->
+    <div id="renameModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-gunmetal/90 p-8 rounded-xl border-2 border-deepCyan/30 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-deepCyan">Rename <span id="renameType">Recording</span></h2>
+                <button onclick="closeRenameModal()" class="text-softWhite hover:text-deepCyan">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="mb-6">
+                <label for="newTitle" class="block text-deepCyan mb-2">Enter new title:</label>
+                <input type="text" id="newTitle" class="w-full bg-charcoal text-softWhite border border-deepCyan/30 rounded-lg p-3 focus:border-deepCyan focus:outline-none">
+                <input type="hidden" id="recordingId" value="">
+                <input type="hidden" id="recordingType" value="">
+            </div>
+            
+            <div class="flex justify-between">
+                <button onclick="closeRenameModal()" class="px-6 py-3 border border-deepCyan/30 text-deepCyan rounded-lg hover:bg-deepCyan/10">
+                    Cancel
+                </button>
+                <button onclick="submitRename()" class="px-6 py-3 bg-deepCyan text-white rounded-lg hover:bg-deepCyan/80">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview New Recording Modal -->
+    <div id="previewNewRecordingModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-gunmetal/90 p-8 rounded-xl border-2 border-neonBlue/30 max-w-xl w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-neonBlue">Preview New Recording</h2>
+                <button onclick="closePreviewNewRecordingModal()" class="text-softWhite hover:text-neonBlue">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="mb-6">
+                <div class="bg-charcoal/50 rounded-lg p-4 mb-6">
+                    <audio id="previewNewRecordingAudio" controls class="w-full">
+                        <source src="" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="newRecordingTitle" class="block text-neonBlue mb-2">Recording Title:</label>
+                        <input type="text" id="newRecordingTitle" class="w-full bg-charcoal text-softWhite border border-neonBlue/30 rounded-lg p-3 focus:border-neonBlue focus:outline-none" placeholder="Enter a title for your recording">
+                    </div>
+                    
+                    <div>
+                        <label for="newRecordingInstrument" class="block text-neonBlue mb-2">Instrument:</label>
+                        <select id="newRecordingInstrument" class="w-full bg-charcoal text-softWhite border border-neonBlue/30 rounded-lg p-3 focus:border-neonBlue focus:outline-none">
+                            <option value="Guitar">Guitar</option>
+                            <option value="Bass">Bass</option>
+                            <option value="Drums">Drums</option>
+                            <option value="Keyboard">Keyboard</option>
+                            <option value="Vocal">Vocal</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-between">
+                <button onclick="closePreviewNewRecordingModal()" class="px-6 py-3 border border-neonBlue/30 text-neonBlue rounded-lg hover:bg-neonBlue/10">
+                    Cancel
+                </button>
+                <button onclick="saveNewRecording()" class="px-6 py-3 bg-neonBlue text-charcoal font-medium rounded-lg hover:bg-neonBlue/80">
+                    Save Recording
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friends Modal -->
+    <div id="friendsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-gunmetal/90 p-8 rounded-xl border-2 border-neonBlue/30 max-w-2xl w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-neonBlue">Friends</h2>
+                <button onclick="toggleFriendsModal()" class="text-softWhite hover:text-neonBlue">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- Friends will be listed here -->
+                <div class="bg-charcoal/70 rounded-xl p-4 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-neonBlue font-bold">GuitarLegend42</h3>
+                        <p class="text-softWhite/60 text-sm">Online - Jamming now</p>
+                    </div>
+                    <a href="studio.html?id=1" class="ml-auto px-3 py-1 bg-neonBlue/20 text-neonBlue rounded-lg hover:bg-neonBlue/30 text-sm">
+                        Visit Studio
+                    </a>
+                </div>
+                
+                <div class="bg-charcoal/70 rounded-xl p-4 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-neonBlue font-bold">DrumsOfDoom</h3>
+                        <p class="text-softWhite/60 text-sm">Last seen 2 hours ago</p>
+                    </div>
+                    <a href="studio.html?id=2" class="ml-auto px-3 py-1 bg-neonBlue/20 text-neonBlue rounded-lg hover:bg-neonBlue/30 text-sm">
+                        Visit Studio
+                    </a>
+                </div>
+                
+                <div class="bg-charcoal/70 rounded-xl p-4 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-neonBlue/20 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-neonBlue font-bold">BassGuru</h3>
+                        <p class="text-softWhite/60 text-sm">Last seen 1 day ago</p>
+                    </div>
+                    <a href="studio.html?id=3" class="ml-auto px-3 py-1 bg-neonBlue/20 text-neonBlue rounded-lg hover:bg-neonBlue/30 text-sm">
+                        Visit Studio
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-neonBlue/20 pt-6">
+                <a href="#" class="flex items-center justify-center gap-2 p-3 rounded-lg hover:bg-neonBlue/10 transition-all group">
+                    <svg class="w-5 h-5 text-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <span class="font-medium text-neonBlue">Find More Musicians</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

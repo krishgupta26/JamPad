@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JamPad - Global Music Collaboration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neonBlue: '#00FFFF',
+                        deepCyan: '#00AEEF',
+                        jetBlack: '#0A0A0A',
+                        charcoal: '#121212',
+                        gunmetal: '#2A2A2A',
+                        elecPurple: '#8A2BE2',
+                        softWhite: '#EAEAEA'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-[#050507] via-[#070716] to-[#050507] min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 p-4 flex justify-between items-center bg-gunmetal/50 backdrop-blur-sm border-b border-neonBlue/20">
+        <h1 class="text-4xl font-bold text-neonBlue hover:text-deepCyan transition-colors duration-300">JamPad</h1>
+        
+        <div class="flex items-center gap-6">
+            <a href="#" class="text-softWhite hover:text-neonBlue transition-colors px-4 py-2">Features</a>
+            <a href="#" class="text-softWhite hover:text-neonBlue transition-colors px-4 py-2">Sounds</a>
+            <a href="#" class="text-softWhite hover:text-neonBlue transition-colors px-4 py-2">Pricing</a>
+            <a href="#" class="text-softWhite hover:text-neonBlue transition-colors px-4 py-2">Community</a>
+            <a href="http://localhost:3000/login.html" class="text-softWhite hover:text-neonBlue transition-colors px-4 py-2">Log in</a>
+            <button class="bg-neonBlue text-jetBlack px-6 py-2 rounded-full font-bold
+                       hover:bg-deepCyan hover:scale-105 transition-all duration-300">
+                <a href="http://localhost:3000/login.html?signup=true">Sign up</a>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 text-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="music-notes-background-illustration-ai-generative-free-photo.jpg" 
+                 alt="AI generated musical notes background" 
+                 class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-b from-jetBlack/90 via-jetBlack/70 to-jetBlack"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.1)_0%,transparent_70%)]"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <h1 class="text-7xl font-bold text-softWhite mb-6">Music Production, <br>
+                <span class="text-neonBlue text-shadow-glow">Reimagined.</span>
+            </h1>
+            <p class="text-2xl text-gray-300 max-w-3xl mx-auto mb-12 text-shadow-sm">
+                Create & record easily with powerful tools and sounds, all in one place.
+            </p>
+            <button class="bg-neonBlue text-jetBlack text-2xl font-bold px-12 py-6 rounded-xl 
+                         hover:bg-deepCyan transform transition-all duration-300 
+                         shadow-lg shadow-neonBlue/30 hover:shadow-deepCyan/50
+                         relative after:absolute after:inset-0 after:border-2 after:border-neonBlue/50 
+                         after:rounded-xl after:scale-110 after:opacity-0 hover:after:scale-100 
+                         hover:after:opacity-100 after:transition-all after:duration-300">
+                Get started for free
+            </button>
+        </div>
+
+        <!-- Decorative Elements -->
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-jetBlack to-transparent"></div>
+        <div class="absolute -bottom-1 left-0 right-0 h-px bg-neonBlue/20"></div>
+    </section>
+
+    <style>
+        .text-shadow-glow {
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        .text-shadow-sm {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+
+    <!-- Features Grid -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-gunmetal p-8 rounded-xl border-2 border-neonBlue/30 hover:border-neonBlue hover:shadow-[0_0_15px_rgba(0,255,255,0.3)] transition-all duration-300">
+                    <div class="text-6xl mb-6">🏆</div>
+                    <h3 class="text-neonBlue text-xl font-bold mb-4">Battle of Bands</h3>
+                    <p class="text-softWhite">
+                        Compete with bands worldwide in weekly music competitions with community voting.
+                    </p>
+                </div>
+                <div class="bg-gunmetal p-8 rounded-xl border-2 border-elecPurple/30 hover:border-elecPurple hover:shadow-[0_0_15px_rgba(138,43,226,0.3)] transition-all duration-300">
+                    <div class="text-6xl mb-6">🎸</div>
+                    <h3 class="text-elecPurple text-xl font-bold mb-4">myBANDS</h3>
+                    <p class="text-softWhite">
+                        Form virtual bands, chat, and create music with musicians worldwide.
+                    </p>
+                </div>
+                <div class="bg-gunmetal p-8 rounded-xl border-2 border-deepCyan/30 hover:border-deepCyan hover:shadow-[0_0_15px_rgba(0,174,239,0.3)] transition-all duration-300">
+                    <div class="text-6xl mb-6">🎵</div>
+                    <h3 class="text-deepCyan text-xl font-bold mb-4">Live Sessions</h3>
+                    <p class="text-softWhite">
+                        Real-time jamming and recording with crystal-clear audio quality.
+                    </p>
+                </div>
+                <div class="bg-gunmetal p-8 rounded-xl border-2 border-neonBlue/30 hover:border-neonBlue hover:shadow-[0_0_15px_rgba(0,255,255,0.3)] transition-all duration-300">
+                    <div class="text-6xl mb-6">🎧</div>
+                    <h3 class="text-neonBlue text-xl font-bold mb-4">Pro Studio Tools</h3>
+                    <p class="text-softWhite">
+                        Professional mixing, effects, and recording tools at your fingertips.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Battle of Bands Section -->
+    <section class="py-20 bg-gunmetal/30">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-softWhite mb-6">Battle of <span class="text-neonBlue">Bands</span></h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Showcase your band's talent in weekly competitions. Upload your performances, get voted by the community, and win exclusive prizes!
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Competition Features -->
+                <div class="bg-gunmetal p-8 rounded-xl border-2 border-neonBlue/30 hover:border-neonBlue hover:shadow-[0_0_15px_rgba(0,255,255,0.3)] transition-all duration-300">
+                    <div class="text-4xl mb-4">🎸</div>
+                    <h3 class="text-neonBlue font-bold mb-3">Weekly Themes</h3>
+                    <p class="text-softWhite">
+                        Each week features a different musical challenge - from genre-specific battles to technique showcases.
+                    </p>
+                </div>
+                <div class="bg-gunmetal p-8 rounded-xl border-2 border-elecPurple/30 hover:border-elecPurple hover:shadow-[0_0_15px_rgba(138,43,226,0.3)] transition-all duration-300">
+                    <div class="text-4xl mb-4">👥</div>
+                    <h3 class="text-elecPurple font-bold mb-3">Community Voting</h3>
+                    <p class="text-softWhite">
+                        Let the community decide! Fair and transparent voting system with real-time rankings.
+                    </p>
+                </div>
+                <div class="bg-gunmetal p-8 rounded-xl border-2 border-deepCyan/30 hover:border-deepCyan hover:shadow-[0_0_15px_rgba(0,174,239,0.3)] transition-all duration-300">
+                    <div class="text-4xl mb-4">🏆</div>
+                    <h3 class="text-deepCyan font-bold mb-3">Awesome Prizes</h3>
+                    <p class="text-softWhite">
+                        Win studio gear, premium features, and get featured on JamPad's homepage.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- myBANDS Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2">
+                    <h2 class="text-4xl font-bold text-softWhite mb-6">Form Your Dream <span class="text-neonBlue">Band</span></h2>
+                    <p class="text-xl text-gray-300 mb-8">
+                        Distance is no longer a barrier to making great music. Connect with like-minded musicians, form your band, and create amazing music together.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <div class="bg-gunmetal/40 p-4 rounded-lg border border-neonBlue/30">
+                            <h4 class="text-neonBlue font-bold mb-2">Band Chat</h4>
+                            <p class="text-softWhite text-sm">Dedicated chat rooms for seamless communication with bandmates.</p>
+                        </div>
+                        <div class="bg-gunmetal/40 p-4 rounded-lg border border-elecPurple/30">
+                            <h4 class="text-elecPurple font-bold mb-2">Practice Sessions</h4>
+                            <p class="text-softWhite text-sm">Schedule and host online practice sessions with your band.</p>
+                        </div>
+                        <div class="bg-gunmetal/40 p-4 rounded-lg border border-deepCyan/30">
+                            <h4 class="text-deepCyan font-bold mb-2">Song Library</h4>
+                            <p class="text-softWhite text-sm">Keep your band's originals and covers organized in one place.</p>
+                        </div>
+                        <div class="bg-gunmetal/40 p-4 rounded-lg border border-neonBlue/30">
+                            <h4 class="text-neonBlue font-bold mb-2">Live Recording</h4>
+                            <p class="text-softWhite text-sm">Record your band's performances with studio-quality sound.</p>
+                        </div>
+                    </div>
+                    <button class="bg-neonBlue/10 text-neonBlue px-8 py-3 rounded-lg border-2 border-neonBlue
+                               hover:bg-neonBlue/20 transition-all duration-300">
+                        Create Your Band
+                    </button>
+                </div>
+                <div class="lg:w-1/2">
+                    <div class="bg-gunmetal border-2 border-neonBlue/30 rounded-xl overflow-hidden">
+                        <img src="apocalypse-studio-0108-1-scaled-1080x720.jpg" 
+                             alt="Apocalypse studio" 
+                             class="w-full h-full object-cover aspect-video transform group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Riff Sharing Section -->
+    <section class="py-20 bg-gunmetal/30">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-softWhite mb-6">Share & Build on <span class="text-neonBlue">Musical Ideas</span></h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Play over your friends' recordings, share riffs, and watch ideas evolve into full songs. The perfect way to find bandmates who match your style.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Example Riff Cards -->
+                <div class="bg-gunmetal rounded-xl overflow-hidden group hover:scale-105 transition-all duration-300">
+                    <div class="h-48 relative">
+                        <img src="hq720.jpg" alt="Music studio setup" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-neonBlue/20 text-neonBlue px-3 py-1 rounded-full text-sm backdrop-blur-sm">Guitar Riff</span>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                            <div class="w-full bg-black/30 rounded-lg p-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-neonBlue">▶️</span>
+                                    <div class="flex-1 h-1 bg-neonBlue/30 rounded-full">
+                                        <div class="w-3/4 h-full bg-neonBlue rounded-full"></div>
+                                    </div>
+                                    <span class="text-softWhite text-sm">0:32</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-neonBlue font-bold">Blues Scale Run</h3>
+                        <p class="text-gray-400 text-sm">by GuitarHero_42 • 3 versions</p>
+                        <div class="mt-2 flex gap-2">
+                            <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">Blues</span>
+                            <span class="text-xs bg-elecPurple/20 text-elecPurple px-2 py-1 rounded-full">Lead Guitar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gunmetal rounded-xl overflow-hidden group hover:scale-105 transition-all duration-300">
+                    <div class="h-48 relative">
+                        <img src="Open-Handed-Drumming-Everything-You-Need-to-Know.webp" alt="Open handed drumming" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-elecPurple/20 text-elecPurple px-3 py-1 rounded-full text-sm backdrop-blur-sm">Drum Pattern</span>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                            <div class="w-full bg-black/30 rounded-lg p-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-elecPurple">▶️</span>
+                                    <div class="flex-1 h-1 bg-elecPurple/30 rounded-full">
+                                        <div class="w-1/2 h-full bg-elecPurple rounded-full"></div>
+                                    </div>
+                                    <span class="text-softWhite text-sm">0:45</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-elecPurple font-bold">Funky Groove</h3>
+                        <p class="text-gray-400 text-sm">by DrumMaster_99 • 5 versions</p>
+                        <div class="mt-2 flex gap-2">
+                            <span class="text-xs bg-neonBlue/20 text-neonBlue px-2 py-1 rounded-full">Funk</span>
+                            <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">Drums</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gunmetal rounded-xl overflow-hidden group hover:scale-105 transition-all duration-300">
+                    <div class="h-48 relative">
+                        <img src="download (1).jpeg" alt="Music production setup" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-deepCyan/20 text-deepCyan px-3 py-1 rounded-full text-sm backdrop-blur-sm">Bass Line</span>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                            <div class="w-full bg-black/30 rounded-lg p-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-deepCyan">▶️</span>
+                                    <div class="flex-1 h-1 bg-deepCyan/30 rounded-full">
+                                        <div class="w-2/3 h-full bg-deepCyan rounded-full"></div>
+                                    </div>
+                                    <span class="text-softWhite text-sm">1:15</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-deepCyan font-bold">Groovy Bass Loop</h3>
+                        <p class="text-gray-400 text-sm">by BassKing_77 • 2 versions</p>
+                        <div class="mt-2 flex gap-2">
+                            <span class="text-xs bg-elecPurple/20 text-elecPurple px-2 py-1 rounded-full">Jazz</span>
+                            <span class="text-xs bg-neonBlue/20 text-neonBlue px-2 py-1 rounded-full">Bass</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gunmetal rounded-xl overflow-hidden group hover:scale-105 transition-all duration-300">
+                    <div class="h-48 relative">
+                        <img src="download.jpeg" alt="Music equipment" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-neonBlue/20 text-neonBlue px-3 py-1 rounded-full text-sm backdrop-blur-sm">Keys</span>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                            <div class="w-full bg-black/30 rounded-lg p-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-neonBlue">▶️</span>
+                                    <div class="flex-1 h-1 bg-neonBlue/30 rounded-full">
+                                        <div class="w-1/3 h-full bg-neonBlue rounded-full"></div>
+                                    </div>
+                                    <span class="text-softWhite text-sm">0:28</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-neonBlue font-bold">Chord Progression</h3>
+                        <p class="text-gray-400 text-sm">by KeyMaster_55 • 7 versions</p>
+                        <div class="mt-2 flex gap-2">
+                            <span class="text-xs bg-deepCyan/20 text-deepCyan px-2 py-1 rounded-full">Rock</span>
+                            <span class="text-xs bg-elecPurple/20 text-elecPurple px-2 py-1 rounded-full">Keys</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Highlights -->
+            <div class="grid md:grid-cols-3 gap-8 mt-12">
+                <div class="bg-gunmetal p-6 rounded-xl border-2 border-neonBlue/30 hover:border-neonBlue hover:shadow-[0_0_15px_rgba(0,255,255,0.3)] transition-all duration-300">
+                    <h4 class="text-neonBlue font-bold mb-2">Layer & Build</h4>
+                    <p class="text-softWhite">
+                        Record over existing tracks, add your own style, and create new versions that inspire others.
+                    </p>
+                </div>
+                <div class="bg-gunmetal p-6 rounded-xl border-2 border-elecPurple/30 hover:border-elecPurple hover:shadow-[0_0_15px_rgba(138,43,226,0.3)] transition-all duration-300">
+                    <h4 class="text-elecPurple font-bold mb-2">Find Your Sound</h4>
+                    <p class="text-softWhite">
+                        Discover musicians with similar styles and form bands based on musical chemistry.
+                    </p>
+                </div>
+                <div class="bg-gunmetal p-6 rounded-xl border-2 border-deepCyan/30 hover:border-deepCyan hover:shadow-[0_0_15px_rgba(0,174,239,0.3)] transition-all duration-300">
+                    <h4 class="text-deepCyan font-bold mb-2">Version History</h4>
+                    <p class="text-softWhite">
+                        Track how ideas evolve and collaborate with musicians who complement your style.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collaboration Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2">
+                    <h2 class="text-4xl font-bold text-softWhite mb-6">Collaborate with anyone, <span class="text-neonBlue">from anywhere</span></h2>
+                    <p class="text-xl text-gray-300 mb-8">
+                        Share your musical ideas, record with friends, and build amazing tracks together. No matter where you are, JamPad brings musicians together.
+                    </p>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center gap-3 text-gray-300">
+                            <span class="text-neonBlue">✓</span> Record and share your parts
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-300">
+                            <span class="text-neonBlue">✓</span> Layer tracks from different musicians
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-300">
+                            <span class="text-neonBlue">✓</span> Build songs asynchronously
+                        </div>
+                    </div>
+                    <button class="bg-neonBlue/10 text-neonBlue px-8 py-3 rounded-lg border-2 border-neonBlue
+                               hover:bg-neonBlue/20 transition-all duration-300">
+                        Start collaborating
+                    </button>
+                </div>
+                <div class="lg:w-1/2">
+                    <div class="bg-gunmetal border-2 border-neonBlue/30 rounded-xl overflow-hidden group hover:shadow-[0_0_30px_rgba(0,255,255,0.3)] transition-all duration-300">
+                        <div class="relative">
+                            <img src="download copy.jpeg" alt="Music studio setup" class="w-full object-cover rounded-lg transform group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-gunmetal via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4 flex items-center gap-4 bg-gunmetal/60 backdrop-blur-sm p-4 rounded-lg border border-neonBlue/30">
+                                <div class="w-12 h-12 bg-neonBlue/20 rounded-full flex items-center justify-center">
+                                    <span class="text-neonBlue text-sm font-bold">[REC]</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-neonBlue text-sm">Recording in progress</span>
+                                        <span class="animate-pulse w-2 h-2 bg-neonBlue rounded-full"></span>
+                                    </div>
+                                    <div class="mt-1 w-full bg-black/30 rounded-full h-1">
+                                        <div class="w-2/3 h-full bg-neonBlue rounded-full"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="py-20 bg-gunmetal/30">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-softWhite mb-16">Professional <span class="text-neonBlue">Tools</span></h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gunmetal p-6 rounded-xl border-2 border-neonBlue/30 hover:border-neonBlue hover:shadow-[0_0_15px_rgba(0,255,255,0.3)] transition-all duration-300">
+                    <h4 class="text-neonBlue font-bold mb-2">Vocal tuning</h4>
+                    <p class="text-softWhite">
+                        Achieve pro-sounding vocals from every take with our pitch correction software.
+                    </p>
+                </div>
+                <div class="bg-gunmetal p-6 rounded-xl border-2 border-elecPurple/30 hover:border-elecPurple hover:shadow-[0_0_15px_rgba(138,43,226,0.3)] transition-all duration-300">
+                    <h4 class="text-elecPurple font-bold mb-2">Automation</h4>
+                    <p class="text-softWhite">
+                        Tweak volume, pan, and use filter sweep effects with powerful audio editing tools.
+                    </p>
+                </div>
+                <div class="bg-gunmetal p-6 rounded-xl border-2 border-deepCyan/30 hover:border-deepCyan hover:shadow-[0_0_15px_rgba(0,174,239,0.3)] transition-all duration-300">
+                    <h4 class="text-deepCyan font-bold mb-2">Patterns beatmaker</h4>
+                    <p class="text-softWhite">
+                        Make your own beats with ease. Sequencing unique beats has never been simpler.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-softWhite mb-6">Ready to start creating?</h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Join thousands of musicians creating and collaborating on JamPad.
+            </p>
+            <a href="http://localhost:3000/login.html" class="inline-block">
+                <button class="bg-neonBlue text-jetBlack text-2xl font-bold px-12 py-6 rounded-xl 
+                             hover:bg-deepCyan transform transition-all duration-300 
+                             shadow-lg shadow-neonBlue/30 hover:shadow-deepCyan/50">
+                    Start creating for free
+                </button>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gunmetal/50 border-t border-neonBlue/20 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-neonBlue font-bold mb-4">JamPad</h3>
+                    <div class="space-y-2">
+                        <a href="#" class="block text-softWhite hover:text-neonBlue">About</a>
+                        <a href="#" class="block text-softWhite hover:text-neonBlue">Careers</a>
+                        <a href="#" class="block text-softWhite hover:text-neonBlue">Press</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-neonBlue font-bold mb-4">Resources</h3>
+                    <div class="space-y-2">
+                        <a href="#" class="block text-softWhite hover:text-neonBlue">Blog</a>
+                        <a href="#" class="block text-softWhite hover:text-neonBlue">Tutorials</a>
+                        <a href="#" class="block text-softWhite hover:text-neonBlue">Help Center</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-neonBlue font-bold mb-4">Legal</h3>
+                    <div class="space-y-2">
+                        <a href="#" class="block text-softWhite hover:text-neonBlue">Terms</a>
+                        <a href="#" class="block text-softWhite hover:text-neonBlue">Privacy</a>
+                        <a href="#" class="block text-softWhite hover:text-neonBlue">Cookies</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-neonBlue font-bold mb-4">Connect</h3>
+                    <div class="space-y-2">
+                        <a href="#" class="block text-softWhite hover:text-neonBlue">Twitter</a>
+                        <a href="#" class="block text-softWhite hover:text-neonBlue">Discord</a>
+                        <a href="#" class="block text-softWhite hover:text-neonBlue">Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+// Update the signup form event listener
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+        const response = await fetch('/api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: emailInput.value,
+                username: usernameInput.value,
+                password: passwordInput.value
+            }),
+            credentials: 'include'
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            window.location.href = data.redirect; // Use the redirect URL from response
+        } else {
+            showError(data.error);
+        }
+    } catch (error) {
+        showError('An error occurred during signup');
+    }
+});
